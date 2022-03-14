@@ -2,8 +2,8 @@ package com.example.chart.chart_view.data
 
 data class DrawData
     (
-    var startX: Int = 0,
-    var startY: Int = 0,
-    var stopX: Int = 0,
-    var stopY: Int = 0
+    var startX: Float = 0f,
+    var startY: Float = 0f,
+    var stopX: Float = 0f,
+    var stopY: Float = 0f
             )

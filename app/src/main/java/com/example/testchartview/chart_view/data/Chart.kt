@@ -24,9 +24,9 @@ class Chart {
 
     companion object{
 
-        const val CHART_PARTS = 10 //сколько длелений показывается
-        const val MAX_ITEMS_COUNT = 6
+        const val CHART_PARTS = 10 //сколько  горизонтальных линий
+        const val MAX_ITEMS_COUNT = 22
         const val CHART_PART_VALUE = 10 // сколько горизонтальных делений
-        const val TEXT_SIZE_OFFSET = 10
+        const val TEXT_SIZE_OFFSET = 0
     }
 }

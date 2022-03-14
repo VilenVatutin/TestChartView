@@ -22,11 +22,10 @@ class DrawController(
     private var fillPaint: Paint? = null
 
     fun draw(canvas: Canvas){
+        drawFrame(canvas)
         for (i in 0 until  Chart.MAX_ITEMS_COUNT) {// количество элементов которые будут показыватся
             drawChart(canvas, i, false)
         }
-        drawFrame(canvas)
-
     }
     fun updateTitleWidth(){
         chart.titleWidth = getTitleWidth()
@@ -97,7 +96,7 @@ class DrawController(
             val inputData = inputDataList[i]
             val date: String = Utils().format(inputData.millis)
             val dateWidth = frameTextPaint.measureText(date).toInt()
-            var x: Int
+            var x: Float
             if (drawDataList.size > i) {
                 val drawData: DrawData = drawDataList[i]
                 x = drawData.startX
@@ -134,10 +133,10 @@ class DrawController(
             return
         }
         val drawData = dataList[position]
-        val startX: Int = drawData.startX
-        val startY: Int = drawData.startY
-        val stopX: Int
-        val stopY: Int
+        val startX: Float = drawData.startX
+        val startY: Float = drawData.startY
+        val stopX: Float
+        val stopY: Float
         val alpha: Int
 //        if (isAnimation) {
 //            stopX = value.getX()
@@ -153,10 +152,10 @@ class DrawController(
 
     private fun drawChart(
         canvas: Canvas,
-        startX: Int,
-        startY: Int,
-        stopX: Int,
-        stopY: Int,
+        startX: Float,
+        startY: Float,
+        stopX: Float,
+        stopY: Float,
         alpha: Int,
         position: Int
     ) {

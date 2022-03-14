@@ -14,6 +14,8 @@ import java.util.ArrayList
 class ChartView(viewContext: Context, attrs: AttributeSet) : View(viewContext, attrs) {
 
     var firstPosition: Float = 0f
+    var offset: Float = 0f
+
 
     private val chartManager = ChartManager(viewContext)
 
@@ -26,7 +28,6 @@ class ChartView(viewContext: Context, attrs: AttributeSet) : View(viewContext, a
         setMeasuredDimension(width, height)
     }
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        var offset: Float = 0f
         var chart = chartManager.chart
         when(event?.action){
             ACTION_DOWN ->{
@@ -39,7 +40,7 @@ class ChartView(viewContext: Context, attrs: AttributeSet) : View(viewContext, a
                 invalidate()
             }
             ACTION_UP ->{
-                //  положить offset в chart
+                chart.offPoint += Utils().getOffPoint(offset, this.width)
             }
             else ->{}
         }

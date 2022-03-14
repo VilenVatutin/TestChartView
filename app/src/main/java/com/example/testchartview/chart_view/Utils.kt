@@ -36,17 +36,24 @@ class Utils {
         return format.format(millis)
     }
 
+    fun getOffPoint(mOffset: Float, viewWidth: Int ): Int =-1*(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)).toInt()
+
     fun getDrawData(mOffset: Float,viewWidth: Int, chart: Chart?): List<DrawData> {// возвращает координаты рисования
+
+        // может проблема  в потере данных при округлении?
         if (chart == null || chart.inputData.isEmpty()) {
             return ArrayList<DrawData>()
         }
-        var offPoint = -1*(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)).toInt()
-//TODO переменную отслеживающую количество проскролленных айтемов
-//        print("$mOffset $offPoint  \n")
+        var offPoint = getOffPoint(mOffset, viewWidth)
+//        print("$offPoint ${chart.offPoint}  \n")
         if(offPoint > 0 &&  offPoint+chart.offPoint <=  chart.inputData.lastIndex){
-            chart.offPoint = offPoint
             chart.showingData =  chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint)
             correctDataListSize(chart.showingData)
+            print(" offPoint = $offPoint chart.offPoint = ${chart.offPoint} MAX = ${Chart.MAX_ITEMS_COUNT} \n" +
+                    "offPoint+chart.offPoint = ${offPoint + chart.offPoint} \n" +
+                    "MAX + offPoint + chart.offPoint = ${Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint} \n" +
+                    "${chart.showingData.size}\n" +
+                    "///////////////////////\n" )
             return createDrawDataList(
                 mOffset,
                 chart,
@@ -63,13 +70,18 @@ class Utils {
             )
         }
 //        print("${chart.inputData.subList(abs(offPoint), Chart.MAX_ITEMS_COUNT+abs(offPoint))} \n")
-        correctDataListSize(chart.inputData.subList(0, Chart.MAX_ITEMS_COUNT))
+
+        //chart.offPoint может быть отрицательным
+
+        correctDataListSize(chart.inputData.subList(chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
         return createDrawDataList(
             if(abs(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)) < 1) mOffset else 0f,
             chart,
-            createValueList(chart.inputData.subList(0, Chart.MAX_ITEMS_COUNT))
+            createValueList(chart.inputData.subList( chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
         )
+
     }
+
     private fun createValueList(dataList: List<InputData>): List<Float> {
         val valueList: MutableList<Float> = ArrayList()
         val topValue: Int = Utils().max(dataList)
@@ -86,7 +98,7 @@ class Utils {
         valueList: List<Float>
     ): List<DrawData> {
         val drawDataList: MutableList<DrawData> = ArrayList()
-        for (i in 0 until valueList.size - 1) {
+        for (i in 0 until valueList.lastIndex) {
             val drawData: DrawData = createDrawData(mOffset,chart, valueList, i)
             drawDataList.add(drawData)
         }
@@ -99,23 +111,23 @@ class Utils {
         position: Int
     ): DrawData {
         val drawData = DrawData()
-        if (position > valueList.size - 1) {
+        if (position > valueList.lastIndex) {
             return drawData
         }
         val value = valueList[position]
         val startX: Int = getCoordinateX(chart, position)
         val startY: Int = getCoordinateY(chart, value)
-        drawData.startX = startX + mOffset.toInt()
-        drawData.startY =  startY
+        drawData.startX = startX.toFloat() // убрал прибавление offSet и это исправило баг
+        drawData.startY =  startY.toFloat()
         val nextPosition = position + 1
         if (nextPosition < valueList.size) {
             val nextValue = valueList[nextPosition]
             val stopX: Int =
                 getCoordinateX(chart, nextPosition)
             val stopY = getCoordinateY(chart, nextValue)
-            drawData.stopX = stopX + mOffset.toInt()
-            print("$startX $stopX \n")
-            drawData.stopY = stopY
+            drawData.stopX = stopX.toFloat()
+//            print("$startX $stopX $mOffset \n")
+            drawData.stopY = stopY.toFloat()
         }
         return drawData
     }
@@ -139,15 +151,12 @@ class Utils {
     }
 
     private fun getCoordinateX(chart: Chart, index: Int): Int {
-        val width: Int = chart.width
-        val titleWidth: Int = /*chart.titleWidth*/ 0
-        val widthCorrected = width - titleWidth
-        val partWidth = widthCorrected / (Chart.MAX_ITEMS_COUNT - 1)
-        var coordinate = titleWidth + partWidth * index
+        val partWidth = chart.width / (Chart.MAX_ITEMS_COUNT-1)
+        var coordinate = partWidth * index
         if (coordinate < 0) {
             coordinate = 0
-        } else if (coordinate > width) {
-            coordinate = width
+        } else if (coordinate > chart.width) {
+            coordinate = chart.width
         }
         return coordinate
     }
