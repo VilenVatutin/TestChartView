@@ -7,6 +7,7 @@ import com.example.chart.chart_view.data.Chart
 import com.example.chart.chart_view.data.DrawData
 import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.R
+import com.example.testchartview.chart_view.data.PointData
 
 class DrawController(
     val context: Context,
@@ -147,6 +148,7 @@ class DrawController(
             stopY = drawData.stopY
             alpha = 255///////////////////
 //        }
+        chart.points[position] = PointData(startX, startY, chart.showingData[position].value.toString())
         drawChart(canvas, startX, startY, stopX, stopY, alpha, position)
     }
 
@@ -167,8 +169,8 @@ class DrawController(
         )
         if (position > 0) {
             strokePaint!!.alpha = alpha
-            canvas.drawCircle(startX.toFloat(), startY.toFloat(), radius.toFloat(), strokePaint!!)
-            canvas.drawCircle(startX.toFloat(), startY.toFloat(), inerRadius.toFloat(), fillPaint!!)
+//            canvas.drawCircle(startX, startY, radius.toFloat(), strokePaint!!)
+//            canvas.drawCircle(startX, startY, inerRadius.toFloat(), fillPaint!!)
         }
     }
 

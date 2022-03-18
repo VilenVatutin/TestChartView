@@ -23,6 +23,26 @@ class Utils {
         return maxValue
     }
 
+    fun clickOnPoint(x: Float, y: Float, chart: Chart): Pair<Pair<Float, Float>, String>{
+        for(i: Int in 0..chart.points.lastIndex){
+            if(abs(abs(chart.points[i].x) - abs(x)) <30f && abs(abs(chart.points[i].y) - abs(y)) <=30f){
+                return Pair(Pair(chart.points[i].x, chart.points[i].y),chart.points[i].info)
+//                print(" ...........${chart.points[i].info} .....\n" +
+//                        "............\n")
+            }
+        }
+        return Pair(Pair(-1f,-1f), "")
+    }
+
+    fun moveOnPoint(x: Float, chart: Chart): Pair<Pair<Float, Float>, String>{
+        for(i: Int in 0..chart.points.lastIndex){
+            if(abs(abs(chart.points[i].x) - abs(x)) <30f){
+                return Pair(Pair(chart.points[i].x, chart.points[i].y), chart.points[i].info)
+            }
+        }
+        return Pair(Pair(-1f,-1f), "")
+    }
+
     fun getCorrectedMaxValue(maxValue: Int): Int { // берет наименьший общий делитель, чтобы построить шкалу
         for (value in maxValue downTo Chart.CHART_PART_VALUE) {
             if (value % Chart.CHART_PARTS == 0) {
@@ -36,26 +56,17 @@ class Utils {
         return format.format(millis)
     }
 
-    fun getOffPoint(mOffset: Float, viewWidth: Int ): Int =-1*(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)).toInt()
+    fun getOffPoint(mOffset: Float, viewWidth: Int ): Int = -1*(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)).toInt()
 
     fun getDrawData(mOffset: Float,viewWidth: Int, chart: Chart?): List<DrawData> {// возвращает координаты рисования
-
-        // может проблема  в потере данных при округлении?
         if (chart == null || chart.inputData.isEmpty()) {
             return ArrayList<DrawData>()
         }
         var offPoint = getOffPoint(mOffset, viewWidth)
-//        print("$offPoint ${chart.offPoint}  \n")
-        if(offPoint > 0 &&  offPoint+chart.offPoint <=  chart.inputData.lastIndex){
+        if(offPoint+chart.offPoint > 0 &&  offPoint+chart.offPoint <=  chart.inputData.lastIndex){
             chart.showingData =  chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint)
             correctDataListSize(chart.showingData)
-            print(" offPoint = $offPoint chart.offPoint = ${chart.offPoint} MAX = ${Chart.MAX_ITEMS_COUNT} \n" +
-                    "offPoint+chart.offPoint = ${offPoint + chart.offPoint} \n" +
-                    "MAX + offPoint + chart.offPoint = ${Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint} \n" +
-                    "${chart.showingData.size}\n" +
-                    "///////////////////////\n" )
             return createDrawDataList(
-                mOffset,
                 chart,
                 createValueList(chart.showingData)
             )
@@ -64,21 +75,23 @@ class Utils {
             chart.showingData =  chart.inputData.subList(chart.offPoint+offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint)
             correctDataListSize(chart.showingData)
             return createDrawDataList(
-                mOffset,
                 chart,
                 createValueList(chart.showingData)
             )
         }
-//        print("${chart.inputData.subList(abs(offPoint), Chart.MAX_ITEMS_COUNT+abs(offPoint))} \n")
+        //print("${chart.inputData.subList(abs(offPoint), Chart.MAX_ITEMS_COUNT+abs(offPoint))} \n")
 
         //chart.offPoint может быть отрицательным
+        return if(chart.offPoint > 0){
+            correctDataListSize(chart.inputData.subList(chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
+            createDrawDataList(
+                chart,
+                createValueList(chart.inputData.subList( chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
+            )
+        } else {
+            chart.drawData
+        }
 
-        correctDataListSize(chart.inputData.subList(chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
-        return createDrawDataList(
-            if(abs(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)) < 1) mOffset else 0f,
-            chart,
-            createValueList(chart.inputData.subList( chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
-        )
 
     }
 
@@ -93,19 +106,17 @@ class Utils {
     }
 
     private fun createDrawDataList(
-        mOffset: Float,
         chart: Chart,
         valueList: List<Float>
     ): List<DrawData> {
         val drawDataList: MutableList<DrawData> = ArrayList()
         for (i in 0 until valueList.lastIndex) {
-            val drawData: DrawData = createDrawData(mOffset,chart, valueList, i)
+            val drawData: DrawData = createDrawData(chart, valueList, i)
             drawDataList.add(drawData)
         }
         return drawDataList
     }
     private fun createDrawData(
-        mOffset: Float,
         chart: Chart,
         valueList: List<Float>,
         position: Int
