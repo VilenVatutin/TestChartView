@@ -23,10 +23,10 @@ class DrawController(
     private var fillPaint: Paint? = null
 
     fun draw(canvas: Canvas){
-        drawFrame(canvas)
         for (i in 0 until  Chart.MAX_ITEMS_COUNT) {// количество элементов которые будут показыватся
             drawChart(canvas, i, false)
         }
+        drawFrame(canvas)
     }
     fun updateTitleWidth(){
         chart.titleWidth = getTitleWidth()
@@ -46,8 +46,8 @@ class DrawController(
 
     private fun drawFrame(canvas: Canvas){
         drawChartVertical(canvas)
-        drawChartHorizontal(canvas)
-        drawFrameLines(canvas)
+//        drawChartHorizontal(canvas)
+//        drawFrameLines(canvas)
     }
 
     private fun drawChartVertical(canvas: Canvas) {
@@ -56,18 +56,19 @@ class DrawController(
             return
         }
         val maxValue: Int = Utils().max(inputDataList)
+        val minValue = inputDataList.minByOrNull { it.value }?.value!!
         val correctedMaxValue: Int = Utils().getCorrectedMaxValue(maxValue)
-        val value = correctedMaxValue.toFloat() / maxValue
+        val value = correctedMaxValue.toFloat() / (maxValue - minValue)
         val heightOffset: Int = chart.heightOffset
         val padding: Int = chart.padding
         val textSize: Int = chart.textSize
-        val titleWidth: Int = chart.titleWidth
+        val titleWidth: Int = 0
         val width: Float = chart.width.toFloat()
         val height: Float = (chart.height - textSize - padding).toFloat()
         val chartPartHeight: Float = (height - heightOffset) * value / Chart.CHART_PARTS
         var currHeight = height
-        var currTitle = 0
-        for (i in 0..Chart.CHART_PARTS) {
+        var currTitle = minValue
+        for (i in 0..Chart.CHART_PARTS+1) {
             var titleY = currHeight
             if (i <= 0) {
                 titleY = height
@@ -165,7 +166,7 @@ class DrawController(
         val inerRadius: Int = chart.innerRadius
         canvas.drawLine(
             startX.toFloat(), startY.toFloat(), stopX.toFloat(), stopY.toFloat(),
-            linePaint!!
+            chart.linePaint!!
         )
         if (position > 0) {
             strokePaint!!.alpha = alpha
@@ -194,6 +195,7 @@ class DrawController(
             isAntiAlias = true
             strokeWidth = res.getDimension(R.dimen.frame_line_width)
             color = res.getColor(R.color.gray_200)
+            alpha = 120
         }
         frameTextPaint = Paint().apply {
             isAntiAlias = true

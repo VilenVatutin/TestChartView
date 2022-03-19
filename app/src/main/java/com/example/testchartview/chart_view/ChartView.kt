@@ -3,6 +3,7 @@ package com.example.chart.chart_view
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -143,13 +144,15 @@ class ChartView(viewContext: Context,
         chartManager.drawManager.draw(canvas)
     }
 
-    fun setData(dataList: List<InputData>) {
+    fun setData(dataList: List<InputData>, linePaint: Paint) {
         val chart: Chart = chartManager.chart
+        chart.offPoint = 0
         chart.inputData = dataList
+        chart.linePaint = linePaint
         chartManager.drawManager.updateTitleWidth()
         post {
-            chart.drawData = (Utils().getDrawData(0f, this.width, chart))
-//            chartManager.animate()
+            chart.drawData = (Utils().getDrawData(0.01f, this.width, chart))
+            invalidate()
         }
     }
 

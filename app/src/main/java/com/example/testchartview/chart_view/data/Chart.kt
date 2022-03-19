@@ -1,5 +1,6 @@
 package com.example.chart.chart_view.data
 
+import android.graphics.Paint
 import com.example.testchartview.chart_view.data.PointData
 import java.util.ArrayList
 
@@ -8,6 +9,8 @@ class Chart {
 
     var width = 0
     var height = 0
+
+    var linePaint: Paint? = null
 
     var padding = 0
     var titleWidth = 0
@@ -19,8 +22,9 @@ class Chart {
 
     var inputData: List<InputData> = ArrayList<InputData>()
     var showingData: List<InputData> = ArrayList<InputData>()
-    var points = MutableList<PointData>(MAX_ITEMS_COUNT) { PointData() }
+    var points = MutableList(MAX_ITEMS_COUNT) { PointData() }
     var offPoint: Int = 0
+        set(value) { field = if(value < 0) 0 else value }
     var drawData: List<DrawData> = ArrayList<DrawData>()
 
     companion object {

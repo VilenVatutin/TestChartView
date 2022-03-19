@@ -63,7 +63,7 @@ class Utils {
             return ArrayList<DrawData>()
         }
         var offPoint = getOffPoint(mOffset, viewWidth)
-        if(offPoint+chart.offPoint > 0 &&  offPoint+chart.offPoint <=  chart.inputData.lastIndex){
+        if(offPoint+chart.offPoint >= 0 &&  offPoint+chart.offPoint <=  chart.inputData.lastIndex){
             chart.showingData =  chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint)
             correctDataListSize(chart.showingData)
             return createDrawDataList(
@@ -82,7 +82,7 @@ class Utils {
         //print("${chart.inputData.subList(abs(offPoint), Chart.MAX_ITEMS_COUNT+abs(offPoint))} \n")
 
         //chart.offPoint может быть отрицательным
-        return if(chart.offPoint > 0){
+        return if(chart.offPoint >= 0){
             correctDataListSize(chart.inputData.subList(chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
             createDrawDataList(
                 chart,
@@ -91,15 +91,14 @@ class Utils {
         } else {
             chart.drawData
         }
-
-
     }
 
     private fun createValueList(dataList: List<InputData>): List<Float> {
         val valueList: MutableList<Float> = ArrayList()
-        val topValue: Int = Utils().max(dataList)
+        val minValue = dataList.minByOrNull { it.value }?.value!!
+        val topValue: Int = Utils().max(dataList) - minValue
         for (data in dataList) {
-            val value = data.value.toFloat() / topValue
+            val value = (data.value.toFloat()- minValue)/ topValue
             valueList.add(value)
         }
         return valueList

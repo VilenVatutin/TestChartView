@@ -20,6 +20,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chart"
+        android:layout_marginTop="10dp">
+
+        <View
+            android:id="@+id/btnBlue"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/blue"/>
+
+        <View
+            android:id="@+id/btnPurple"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/purple_200"/>
+
+
+    </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/rl"
@@ -33,6 +55,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:textColor="@color/black"
+            android:gravity="center"
             android:background="@drawable/rectangle"
             android:layout_centerHorizontal="true"/>
 
