@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import com.example.chart.chart_view.data.Chart
 
-class DrawManager(val context: Context) {
+class DrawManager(context: Context) {
     val chart = Chart()
     val drawController = DrawController(context, chart)
 

@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class InputData(
-    var graphValue: Int,
-    var millis: Long = 0,
+    var graphValue: Double,
+    var date: String = "",
 ) : Parcelable

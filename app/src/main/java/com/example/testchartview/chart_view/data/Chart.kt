@@ -13,17 +13,20 @@ class Chart {
     var height = 0
 
     var lineWidth = 1f
-    var lineColor = -9584908
+        set(value) {
+            field = value
+            linePaint.strokeWidth = field
+        }
+    var lineColor = Color.BLUE
+        set(value) {
+            field = value
+            linePaint.color = field
+        }
+
     var linePaint: Paint = Paint().apply {
         isAntiAlias = true
-        color = -9584908
-        strokeWidth = 3f
-    }
-    var backGroundPaint = Paint().apply {
-        isAntiAlias = true
-        strokeWidth = 1f
-        color = -9584908
-        alpha = 120
+        color = lineColor
+        strokeWidth = lineWidth
     }
 
     var frameLinePaint = Paint().apply {
@@ -45,14 +48,14 @@ class Chart {
     var showingData: ArrayList<InputData> = ArrayList<InputData>()
     var points = MutableList(MAX_ITEMS_COUNT) { PointData() }
     var offPoint: Int = 0
-        set(value) { field = if(value < 0) 0 else value }
+        set(value) { field = if(value < 0) 0 else if(value > inputData.lastIndex - MAX_ITEMS_COUNT)inputData.lastIndex - MAX_ITEMS_COUNT else value }
     var drawData: ArrayList<DrawData> = ArrayList<DrawData>()
 
     companion object {
 
-        const val CHART_PARTS = 10 //сколько  горизонтальных линий
+        const val CHART_PARTS = 5
         const val MAX_ITEMS_COUNT = 22
-        const val CHART_PART_VALUE = 10 // сколько горизонтальных делений
+        const val CHART_PART_VALUE = 10
         const val TEXT_SIZE_OFFSET = 0
     }
 }

@@ -45,6 +45,7 @@ class ChartView(
         bundle.putParcelableArrayList(SHOWING_DATA, chartManager.chart.showingData)
         bundle.putInt(OFFPOINT, chartManager.chart.offPoint)
         bundle.putParcelableArrayList(DRAW_DATA, chartManager.chart.drawData)
+        bundle.putInt(LINE_COLOR, chartManager.chart.lineColor)
         return bundle
     }
 
@@ -52,9 +53,14 @@ class ChartView(
         var superState: Parcelable? = null
         if (state is Bundle) {
             val bundle = state
-            chartManager.chart.inputData = bundle.getParcelableArrayList(INPUT_DATA)!!
-            chartManager.chart.showingData = bundle.getParcelableArrayList(SHOWING_DATA)!!
-            chartManager.chart.offPoint = bundle.getInt(OFFPOINT)
+            chartManager.chart.apply {
+                inputData = bundle.getParcelableArrayList(INPUT_DATA)!!
+                showingData = bundle.getParcelableArrayList(SHOWING_DATA)!!
+                offPoint = bundle.getInt(OFFPOINT)
+                drawData = bundle.getParcelableArrayList(DRAW_DATA)!!
+                lineColor = bundle.getInt(LINE_COLOR)
+            }
+
             superState = state.getParcelable(SUPER_STATE)
             invalidate()
         }
@@ -70,11 +76,11 @@ class ChartView(
     }
 
     fun setLineColor(color: Int) {
-        chartManager.chart.linePaint?.color = color
+        chartManager.chart.lineColor = color
     }
 
     fun setLineWidth(width: Float) {
-        chartManager.chart.linePaint?.strokeWidth = width
+        chartManager.chart.lineWidth = width
     }
 
     fun setFrameLineColor(color: Int){
@@ -84,7 +90,6 @@ class ChartView(
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         var chart = chartManager.chart
         event?.let {
-            print("${it.pointerCount} \n")
             if (it.pointerCount == 1) {
                 when (it.action) {
                     ACTION_DOWN -> {
@@ -107,7 +112,6 @@ class ChartView(
                         )
                     }
                     ACTION_UP -> {
-                        chart.offPoint += Utils().getOffPoint(offset, this.width)
                         pointListener?.hideDialog()
                     }
                     else -> {
@@ -116,10 +120,9 @@ class ChartView(
 
             }
             if (it.pointerCount == 2) {
-                val index =
-                    it.action and ACTION_DOWN shr ACTION_MOVE
-                when (it.action) {
-                    ACTION_DOWN -> {
+                val index = it.action and ACTION_DOWN shr ACTION_MOVE
+                when (it.actionMasked) {
+                    ACTION_POINTER_DOWN -> {
                         firstPosition = it.getX(it.getPointerId(index))
                     }
                     ACTION_MOVE -> {
@@ -129,7 +132,7 @@ class ChartView(
                             (Utils().getDrawData(offset, this.width, chart)) as ArrayList<DrawData>
                         invalidate()
                     }
-                    ACTION_UP -> {
+                    ACTION_POINTER_UP -> {
                         chart.offPoint += Utils().getOffPoint(offset, this.width)
                     }
                     else -> {
@@ -138,6 +141,11 @@ class ChartView(
             }
         }
         return true
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        chartManager.chart.drawData = (Utils().getDrawData(0.0f, this.width, chartManager.chart)) as ArrayList<DrawData>
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -150,7 +158,7 @@ class ChartView(
         chart.inputData = dataList as ArrayList<InputData>
         chartManager.drawManager.updateTitleWidth()
         post {
-            chart.drawData = (Utils().getDrawData(0.01f, this.width, chart)) as ArrayList<DrawData>
+            chart.drawData = (Utils().getDrawData(0.0f, this.width, chart)) as ArrayList<DrawData>
             invalidate()
         }
     }
@@ -182,5 +190,6 @@ class ChartView(
         const val SUPER_STATE = "super state"
         const val OFFPOINT = "offset"
         const val DRAW_DATA = "draw data"
+        const val LINE_COLOR = "line color"
     }
 }

@@ -8,6 +8,7 @@ import com.example.chart.chart_view.data.DrawData
 import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.R
 import com.example.testchartview.chart_view.data.PointData
+import java.lang.String.format
 
 class DrawController(
     val context: Context,
@@ -22,17 +23,18 @@ class DrawController(
     private var strokePaint: Paint? = null
     private var fillPaint: Paint? = null
 
-    fun draw(canvas: Canvas){
-        for (i in 0 until  Chart.MAX_ITEMS_COUNT) {// количество элементов которые будут показыватся
+    fun draw(canvas: Canvas) {
+        for (i in 0 until Chart.MAX_ITEMS_COUNT) {
             drawChart(canvas, i, false)
         }
-        if(chart.drawFrame) drawFrame(canvas)
+        if (chart.drawFrame) drawFrame(canvas)
     }
 
-    fun updateTitleWidth(){
+    fun updateTitleWidth() {
         chart.titleWidth = getTitleWidth()
     }
-    private fun getTitleWidth(): Int{
+
+    private fun getTitleWidth(): Int {
         val valueList: List<InputData> = chart.inputData
         if (valueList.isEmpty()) {
             return 0
@@ -45,10 +47,8 @@ class DrawController(
         return padding + titleWidth + padding
     }
 
-    private fun drawFrame(canvas: Canvas){
+    private fun drawFrame(canvas: Canvas) {
         drawChartVertical(canvas)
-//        drawChartHorizontal(canvas)
-//        drawFrameLines(canvas)
     }
 
     private fun drawChartVertical(canvas: Canvas) {
@@ -56,78 +56,38 @@ class DrawController(
         if (inputDataList.isEmpty()) {
             return
         }
-        val maxValue: Int = Utils().max(inputDataList)
+        val maxValue: Double = Utils().max(inputDataList)
         val minValue = inputDataList.minByOrNull { it.graphValue }?.graphValue!!
-        val correctedMaxValue: Int = Utils().getCorrectedMaxValue(maxValue)
-        val value = correctedMaxValue.toFloat() / (maxValue - minValue)
+        val correctedMaxValue: Double = Utils().getCorrectedMaxValue(maxValue)
+        val correctedMinValue = Utils().getCorrectedMinValue(minValue)
+        val value = (correctedMaxValue - correctedMinValue) / (maxValue - minValue)
         val heightOffset: Int = chart.heightOffset
         val padding: Int = chart.padding
         val textSize: Int = chart.textSize
         val titleWidth: Int = 0
         val width: Float = chart.width.toFloat()
         val height: Float = (chart.height - textSize - padding).toFloat()
-        val chartPartHeight: Float = (height - heightOffset) * value / Chart.CHART_PARTS
+        val chartPartHeight: Float =
+            ((height - heightOffset) * value / Chart.CHART_PARTS).toFloat()//
         var currHeight = height
         var currTitle = minValue
-        for (i in 0..Chart.CHART_PARTS+1) {
+        for (i in 0..Chart.CHART_PARTS) {
             var titleY = currHeight
             if (i <= 0) {
                 titleY = height
             } else if (textSize + chart.heightOffset > currHeight) {
                 titleY = currHeight + textSize - Chart.TEXT_SIZE_OFFSET
             }
-            if (i > 0) {
-                canvas.drawLine(
-                    titleWidth.toFloat(), currHeight, width, currHeight,
-                    chart.frameLinePaint
-                )
-            }
-            val title = currTitle.toString()
+            chart.frameLinePaint.color
+            canvas.drawLine(
+                titleWidth.toFloat(), currHeight, width, currHeight,
+                chart.frameLinePaint
+            )
+            val title = "\$" + String.format("%.2f", currTitle)
             canvas.drawText(title, padding.toFloat(), titleY, frameTextPaint!!)
             currHeight -= chartPartHeight
-            currTitle += correctedMaxValue / Chart.CHART_PARTS
+            currTitle += ((correctedMaxValue - correctedMinValue) / Chart.CHART_PARTS)
         }
-    }
-
-    private fun drawChartHorizontal(canvas: Canvas) {
-        val inputDataList: List<InputData> = chart.showingData
-        val drawDataList: List<DrawData> = chart.drawData
-        if (inputDataList.isEmpty() || drawDataList.isEmpty()) {
-            return
-        }
-        for (i in inputDataList.indices) {
-            val inputData = inputDataList[i]
-            val date: String = Utils().format(inputData.millis)
-            val dateWidth = frameTextPaint.measureText(date).toInt()
-            var x: Float
-            if (drawDataList.size > i) {
-                val drawData: DrawData = drawDataList[i]
-                x = drawData.startX
-                if (i > 0) {
-                    x -= dateWidth / 2
-                }
-            } else {
-                x = drawDataList[drawDataList.size - 1].stopX - dateWidth
-            }
-            canvas.drawText(date, x.toFloat(), chart.height.toFloat(), frameTextPaint)
-        }
-    }
-
-    private fun drawFrameLines(canvas: Canvas) {
-        val textSize: Int = chart.textSize
-        val padding: Int = chart.padding
-        val height: Int = chart.height - textSize - padding
-        val width: Int = chart.width
-        val titleWidth: Int = chart.titleWidth
-        val heightOffset: Int = chart.heightOffset
-        canvas.drawLine(
-            titleWidth.toFloat(), heightOffset.toFloat(), titleWidth.toFloat(), height.toFloat(),
-            chart.frameLinePaint
-        )
-        canvas.drawLine(
-            titleWidth.toFloat(), height.toFloat(), width.toFloat(), height.toFloat(),
-            chart.frameLinePaint
-        )
     }
 
     private fun drawChart(canvas: Canvas, position: Int, isAnimation: Boolean) {
@@ -141,16 +101,14 @@ class DrawController(
         val stopX: Float
         val stopY: Float
         val alpha: Int
-//        if (isAnimation) {
-//            stopX = value.getX()
-//            stopY = value.getY()
-//            alpha = value.getAlpha()
-//        } else {
-            stopX = drawData.stopX
-            stopY = drawData.stopY
-            alpha = 255///////////////////
-//        }
-        chart.points[position] = PointData(startX, startY, chart.showingData[position].graphValue.toString())
+        stopX = drawData.stopX
+        stopY = drawData.stopY
+        alpha = 255
+        chart.points[position] = PointData(
+            startX,
+            startY,
+            "\$${chart.showingData[position].graphValue} \n" + chart.showingData[position].date
+        )
         drawChart(canvas, startX, startY, stopX, stopY, alpha, position)
     }
 
@@ -166,13 +124,13 @@ class DrawController(
         val radius: Int = chart.radius
         val inerRadius: Int = chart.innerRadius
         canvas.drawLine(
-            startX.toFloat(), startY.toFloat(), stopX.toFloat(), stopY.toFloat(),
-            chart.linePaint!!
+            startX, startY, stopX, stopY,
+            chart.linePaint
         )
         if (position > 0) {
-//            strokePaint!!.alpha = alpha
-//            canvas.drawCircle(startX, startY, radius.toFloat(), strokePaint!!)
-//            canvas.drawCircle(startX, startY, inerRadius.toFloat(), fillPaint!!)
+            strokePaint!!.alpha = alpha
+            canvas.drawCircle(startX, startY, radius.toFloat(), strokePaint!!)
+            canvas.drawCircle(startX, startY, inerRadius.toFloat(), fillPaint!!)
         }
     }
 
@@ -222,4 +180,5 @@ class DrawController(
 
         }
     }
+
 }
