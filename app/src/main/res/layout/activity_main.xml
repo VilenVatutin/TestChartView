@@ -7,18 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.example.chart.chart_view.ChartView
+    <com.example.testchartview.chart_view.ChartView
         android:id="@+id/chart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:lineColor="@color/purple_200"
+        app:lineWidth="@dimen/line_width"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,14 +29,35 @@
             android:id="@+id/btnBlue"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@color/blue"/>
+            android:background="@color/blue" />
 
         <View
             android:id="@+id/btnPurple"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/purple_200"/>
+            android:background="@color/purple_200" />
+
+        <TextView
+            android:id="@+id/btnHideFrame"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:text="HIDE FRAME" />
+
+        <TextView
+            android:id="@+id/btnShowFrame"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:text="SHOW FRAME" />
+
+        <TextView
+            android:id="@+id/btnRotate"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:text="ROTATE" />
 
 
     </LinearLayout>

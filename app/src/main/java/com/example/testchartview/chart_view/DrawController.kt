@@ -26,8 +26,9 @@ class DrawController(
         for (i in 0 until  Chart.MAX_ITEMS_COUNT) {// количество элементов которые будут показыватся
             drawChart(canvas, i, false)
         }
-        drawFrame(canvas)
+        if(chart.drawFrame) drawFrame(canvas)
     }
+
     fun updateTitleWidth(){
         chart.titleWidth = getTitleWidth()
     }
@@ -56,7 +57,7 @@ class DrawController(
             return
         }
         val maxValue: Int = Utils().max(inputDataList)
-        val minValue = inputDataList.minByOrNull { it.value }?.value!!
+        val minValue = inputDataList.minByOrNull { it.graphValue }?.graphValue!!
         val correctedMaxValue: Int = Utils().getCorrectedMaxValue(maxValue)
         val value = correctedMaxValue.toFloat() / (maxValue - minValue)
         val heightOffset: Int = chart.heightOffset
@@ -78,7 +79,7 @@ class DrawController(
             if (i > 0) {
                 canvas.drawLine(
                     titleWidth.toFloat(), currHeight, width, currHeight,
-                    frameInternalPaint!!
+                    chart.frameLinePaint
                 )
             }
             val title = currTitle.toString()
@@ -121,11 +122,11 @@ class DrawController(
         val heightOffset: Int = chart.heightOffset
         canvas.drawLine(
             titleWidth.toFloat(), heightOffset.toFloat(), titleWidth.toFloat(), height.toFloat(),
-            frameLinePaint
+            chart.frameLinePaint
         )
         canvas.drawLine(
             titleWidth.toFloat(), height.toFloat(), width.toFloat(), height.toFloat(),
-            frameLinePaint
+            chart.frameLinePaint
         )
     }
 
@@ -149,7 +150,7 @@ class DrawController(
             stopY = drawData.stopY
             alpha = 255///////////////////
 //        }
-        chart.points[position] = PointData(startX, startY, chart.showingData[position].value.toString())
+        chart.points[position] = PointData(startX, startY, chart.showingData[position].graphValue.toString())
         drawChart(canvas, startX, startY, stopX, stopY, alpha, position)
     }
 
@@ -169,7 +170,7 @@ class DrawController(
             chart.linePaint!!
         )
         if (position > 0) {
-            strokePaint!!.alpha = alpha
+//            strokePaint!!.alpha = alpha
 //            canvas.drawCircle(startX, startY, radius.toFloat(), strokePaint!!)
 //            canvas.drawCircle(startX, startY, inerRadius.toFloat(), fillPaint!!)
         }

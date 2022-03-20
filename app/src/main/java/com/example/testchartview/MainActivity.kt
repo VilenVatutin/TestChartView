@@ -1,5 +1,6 @@
 package com.example.testchartview
 
+import android.content.pm.ActivityInfo
 import android.content.res.Resources
 import android.graphics.Paint
 import android.os.Bundle
@@ -9,44 +10,55 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginTop
-import com.example.chart.chart_view.ChartView
+import com.example.testchartview.chart_view.ChartView
 import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.chart_view.OnPointChosenLitener
 import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var chart: ChartView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val chart = findViewById<ChartView>(R.id.chart)
+        chart = findViewById(R.id.chart)
         val rl = findViewById<RelativeLayout>(R.id.rl)
         val info = findViewById<TextView>(R.id.info)
         val btnBlue = findViewById<View>(R.id.btnBlue)
         val btnPurple = findViewById<View>(R.id.btnPurple)
+        val btnHideFrame = findViewById<TextView>(R.id.btnHideFrame)
+        val btnShowFrame = findViewById<TextView>(R.id.btnShowFrame)
+        val btnRotate = findViewById<TextView>(R.id.btnRotate)
+        btnHideFrame.setOnClickListener {
+            chart.hideFrame()
+        }
+
+        btnShowFrame.setOnClickListener {
+            chart.showFrame()
+        }
+        btnRotate.setOnClickListener {
+            requestedOrientation =
+                if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         btnBlue.setOnClickListener {
-            val blue = Paint().apply {
-                isAntiAlias = true
-                strokeWidth = resources.getDimension(R.dimen.line_width)
-                color = resources.getColor(R.color.blue)
-            }
-            chart.setData(createBlueChartData(),blue)
+            chart.setLineColor(resources.getColor(R.color.blue))
+//            chart.setLineWidth(resources.getDimension(R.dimen.line_width))
+            chart.setData(createBlueChartData())
         }
         btnPurple.setOnClickListener {
-            val puprple = Paint().apply {
-                isAntiAlias = true
-                strokeWidth = resources.getDimension(R.dimen.line_width)
-                color = resources.getColor(R.color.purple_200)
-            }
-
-            chart.setData(createPurpleChartData(), puprple)
+            chart.setLineColor(resources.getColor(R.color.purple_200))
+//            chart.setLineWidth(resources.getDimension(R.dimen.line_width))
+            chart.setData(createPurpleChartData())
         }
 
-        chart.setOnPointChosenListener(object : OnPointChosenLitener{
+        chart.setOnPointChosenListener(object : OnPointChosenLitener {
             override fun onPointChosen(paddingLeft: Int, paddinTop: Int, sInfo: String) {
                 val params = RelativeLayout.LayoutParams(rl.layoutParams)
-                params.leftMargin = paddingLeft - info.width/2 + getPx(8)
+                params.leftMargin = paddingLeft - info.width / 2 + getPx(8)
                 params.topMargin = paddinTop - info.height - getPx(10) + chart.marginTop
                 rl.layoutParams = params
                 rl.visibility = View.VISIBLE
@@ -57,15 +69,21 @@ class MainActivity : AppCompatActivity() {
                 rl.visibility = View.GONE
             }
         })
+
     }
-fun getPx(dp: Int): Int{
-    var r: Resources = resources
-    return  TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        dp.toFloat(),
-        r.getDisplayMetrics()
-    ).toInt()
-}
+
+    override fun onDestroy() {
+        super.onDestroy()
+        chart.removeOnPointChosenListener()
+    }
+
+    fun getPx(dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            resources.getDisplayMetrics()
+        ).toInt()
+    }
 
     private fun createPurpleChartData(): List<InputData> {
         val dataList: MutableList<InputData> = ArrayList<InputData>()

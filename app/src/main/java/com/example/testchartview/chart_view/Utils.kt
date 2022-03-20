@@ -16,8 +16,8 @@ class Utils {
             return maxValue
         }
         for (data in dataList) {
-            if (data.value > maxValue) {
-                maxValue = data.value
+            if (data.graphValue > maxValue) {
+                maxValue = data.graphValue
             }
         }
         return maxValue
@@ -64,7 +64,7 @@ class Utils {
         }
         var offPoint = getOffPoint(mOffset, viewWidth)
         if(offPoint+chart.offPoint >= 0 &&  offPoint+chart.offPoint <=  chart.inputData.lastIndex){
-            chart.showingData =  chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint)
+            chart.showingData =  (chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint).toList()) as ArrayList<InputData>
             correctDataListSize(chart.showingData)
             return createDrawDataList(
                 chart,
@@ -72,7 +72,7 @@ class Utils {
             )
         }
         if(offPoint< 0 && chart.offPoint + offPoint > 0){
-            chart.showingData =  chart.inputData.subList(chart.offPoint+offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint)
+            chart.showingData =  (chart.inputData.subList(chart.offPoint+offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint).toList()) as ArrayList<InputData>
             correctDataListSize(chart.showingData)
             return createDrawDataList(
                 chart,
@@ -95,10 +95,10 @@ class Utils {
 
     private fun createValueList(dataList: List<InputData>): List<Float> {
         val valueList: MutableList<Float> = ArrayList()
-        val minValue = dataList.minByOrNull { it.value }?.value!!
+        val minValue = dataList.minByOrNull { it.graphValue }?.graphValue!!
         val topValue: Int = Utils().max(dataList) - minValue
         for (data in dataList) {
-            val value = (data.value.toFloat()- minValue)/ topValue
+            val value = (data.graphValue.toFloat()- minValue)/ topValue
             valueList.add(value)
         }
         return valueList
