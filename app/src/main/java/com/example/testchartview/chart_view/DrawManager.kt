@@ -6,13 +6,9 @@ import com.example.chart.chart_view.data.Chart
 
 class DrawManager(context: Context) {
     val chart = Chart()
-    val drawController = DrawController(context, chart)
+    private val drawController = DrawController(context, chart)
 
     fun draw(canvas: Canvas){
         drawController.draw(canvas)
-    }
-
-    fun updateTitleWidth(){
-        drawController.updateTitleWidth()
     }
 }

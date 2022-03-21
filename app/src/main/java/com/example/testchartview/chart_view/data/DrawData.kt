@@ -4,8 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class DrawData
-    (
+data class DrawData(
     var startX: Float = 0f,
     var startY: Float = 0f,
     var stopX: Float = 0f,

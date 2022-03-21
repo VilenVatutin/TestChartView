@@ -3,11 +3,11 @@ package com.example.chart.chart_view
 import com.example.chart.chart_view.data.Chart
 import com.example.chart.chart_view.data.DrawData
 import com.example.chart.chart_view.data.InputData
-import java.text.SimpleDateFormat
+import com.example.testchartview.chart_view.data.PointData
 import java.util.*
 import kotlin.math.abs
 
-class Utils {
+object Utils {
 
     fun max(dataList: List<InputData>?): Double {
         var maxValue = 0.0
@@ -22,22 +22,22 @@ class Utils {
         return maxValue
     }
 
-    fun clickOnPoint(x: Float, y: Float, chart: Chart): Pair<Pair<Float, Float>, String>{
+    fun clickOnPoint(x: Float, y: Float, chart: Chart): PointData{
         for(i: Int in 0..chart.points.lastIndex){
             if(abs(abs(chart.points[i].x) - abs(x)) <30f && abs(abs(chart.points[i].y) - abs(y)) <=30f){
-                return Pair(Pair(chart.points[i].x, chart.points[i].y),chart.points[i].info)
+                return PointData(chart.points[i].x, chart.points[i].y,chart.points[i].info)
             }
         }
-        return Pair(Pair(-1f,-1f), "")
+        return PointData(-1f,-1f, "")
     }
 
-    fun moveOnPoint(x: Float, chart: Chart): Pair<Pair<Float, Float>, String>{
+    fun moveOnPoint(x: Float, chart: Chart): PointData{
         for(i: Int in 0..chart.points.lastIndex){
             if(abs(abs(chart.points[i].x) - abs(x)) <30f){
-                return Pair(Pair(chart.points[i].x, chart.points[i].y), chart.points[i].info)
+                return PointData(chart.points[i].x, chart.points[i].y, chart.points[i].info)
             }
         }
-        return Pair(Pair(-1f,-1f), "")
+        return PointData(-1f,-1f, "")
     }
 
     fun getCorrectedMaxValue(maxValue: Double): Double {
@@ -64,7 +64,7 @@ class Utils {
         if (chart == null || chart.inputData.isEmpty()) {
             return ArrayList<DrawData>()
         }
-        var offPoint = getOffPoint(mOffset, viewWidth)
+        val offPoint = getOffPoint(mOffset, viewWidth)
         if(offPoint+chart.offPoint >= 0 &&  Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint <=  chart.inputData.lastIndex){
             chart.showingData =  (chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint).toList()) as ArrayList<InputData>
             return createDrawDataList(
@@ -72,7 +72,7 @@ class Utils {
                 createValueList(chart.showingData)
             )
         }
-        if(offPoint< 0 && chart.offPoint+offPoint > 0 && Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint > 0){
+        if(offPoint < 0 &&chart.offPoint+offPoint > 0 && Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint > 0){
             chart.showingData =  (chart.inputData.subList(chart.offPoint+offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint).toList()) as ArrayList<InputData>
             return createDrawDataList(
                 chart,
@@ -92,7 +92,7 @@ class Utils {
     private fun createValueList(dataList: List<InputData>): List<Float> {
         val valueList: MutableList<Float> = ArrayList()
         val minValue = dataList.minByOrNull { it.graphValue }?.graphValue!!
-        val topValue = Utils().max(dataList) - minValue
+        val topValue = max(dataList) - minValue
         for (data in dataList) {
             val value = ((data.graphValue- minValue)/ topValue).toFloat()
             valueList.add(value)

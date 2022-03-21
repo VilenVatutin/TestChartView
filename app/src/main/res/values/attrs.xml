@@ -4,5 +4,7 @@
         <attr name="lineColor" format="color" />
         <attr name="lineWidth" format="dimension" />
         <attr name="frameLineColor" format="color" />
+        <attr name="isFrameNeeded" format="boolean" />
+        <attr name="pointypointpoint" format="reference"/>
     </declare-styleable>
 </resources>
