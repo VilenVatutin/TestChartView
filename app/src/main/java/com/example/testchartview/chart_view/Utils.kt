@@ -42,7 +42,7 @@ object Utils {
 
     fun getCorrectedMaxValue(maxValue: Double): Double {
         for (value in (maxValue*100).toInt() downTo Chart.CHART_PART_VALUE) {
-            if (value % Chart.CHART_PARTS == 0) {
+            if (value % Chart.CHART_PART_VALUE == 0) {
                 return value.toDouble()/100
             }
         }
@@ -51,7 +51,7 @@ object Utils {
 
     fun getCorrectedMinValue(minValue: Double): Double {
         for (value in (minValue*100).toInt() .. Chart.CHART_PART_VALUE) {
-            if (value % Chart.CHART_PARTS == 0) {
+            if (value % Chart.CHART_PART_VALUE == 0) {
                 return value.toDouble()/100
             }
         }

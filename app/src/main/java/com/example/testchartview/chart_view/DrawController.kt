@@ -52,7 +52,7 @@ class DrawController(
             if (i <= 0) {
                 titleY = height
             } else if (textSize + chart.heightOffset > currHeight) {
-                titleY = currHeight + textSize - Chart.TEXT_SIZE_OFFSET
+                titleY = currHeight + textSize
             }
             chart.frameLinePaint.color
             canvas.drawLine(

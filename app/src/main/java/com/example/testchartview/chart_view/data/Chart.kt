@@ -61,7 +61,6 @@ class Chart {
 
         const val CHART_PARTS = 5
         const val MAX_ITEMS_COUNT = 22
-        const val CHART_PART_VALUE = 10
-        const val TEXT_SIZE_OFFSET = 0
+        const val CHART_PART_VALUE = 100
     }
 }
