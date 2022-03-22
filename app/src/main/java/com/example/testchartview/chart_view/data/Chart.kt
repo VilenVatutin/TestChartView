@@ -2,6 +2,7 @@ package com.example.chart.chart_view.data
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import com.example.testchartview.chart_view.data.PointData
 import java.util.ArrayList
 
@@ -39,10 +40,8 @@ class Chart {
 
     var radius = 0
     var innerRadius = 0
-    var pointDrawable:Int? = null
-        set(value){
-            if(value == -1) field = null
-        }
+    var pointDrawable:Drawable? = null
+
 
     var inputData: ArrayList<InputData> = ArrayList<InputData>()
     var showingData: ArrayList<InputData> = ArrayList<InputData>()

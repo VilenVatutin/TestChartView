@@ -20,7 +20,7 @@
         app:isFrameNeeded="true"
         app:lineColor="@color/purple_200"
         app:lineWidth="@dimen/line_width"
-        app:pointypointpoint="@drawable/point"/>
+        app:point="@drawable/graph_point" />
 
     <LinearLayout
         android:layout_width="match_parent"

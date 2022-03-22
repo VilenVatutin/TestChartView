@@ -101,12 +101,15 @@ class DrawController(
             chart.linePaint
         )
         if (position > 0) {
-            chart.pointDrawable?.let{
-                val d = AppCompatResources.getDrawable(context, it)
-                d?.setBounds(startX.toInt() - d.intrinsicWidth/2, startY.toInt() - d.intrinsicHeight/2, startX.toInt() + d.intrinsicWidth/2, startY.toInt() + d.intrinsicHeight/2)
-                d?.draw(canvas)
+            chart.pointDrawable?.let {
+                it.setBounds(
+                    startX.toInt() - it.intrinsicWidth / 2,
+                    startY.toInt() - it.intrinsicHeight / 2,
+                    startX.toInt() + it.intrinsicWidth / 2,
+                    startY.toInt() + it.intrinsicHeight / 2
+                )
+                it.draw(canvas)
             }
-
 //            chart.linePaint.alpha = alpha
 //            canvas.drawCircle(startX, startY, radius.toFloat(), chart.linePaint)
 //            canvas.drawCircle(startX, startY, inerRadius.toFloat(), chart.linePaint)

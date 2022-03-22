@@ -76,7 +76,7 @@ class ChartView(
             linePaint.strokeWidth = typedArray.getDimension(R.styleable.ChartView_lineWidth, 5.0f)
             frameLinePaint.color = typedArray.getInt(R.styleable.ChartView_frameLineColor, Color.GRAY)
             isFrameNeeded = typedArray.getBoolean(R.styleable.ChartView_isFrameNeeded, true)
-            pointDrawable = typedArray.getResourceId(R.styleable.ChartView_pointypointpoint, -1)
+            pointDrawable = typedArray.getDrawable(R.styleable.ChartView_point)
         }
         typedArray.recycle()
 
