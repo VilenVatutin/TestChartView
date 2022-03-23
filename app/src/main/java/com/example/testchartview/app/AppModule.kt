@@ -4,8 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.testchartview.CryptoApi
 import com.example.testchartview.URL
-import com.example.testchartview.main.IMainActivity
-import com.example.testchartview.main.MainActivity
+import com.example.testchartview.main.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -37,8 +36,19 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provdeMainActivity(): IMainActivity = MainActivity()
+    fun provideMainActivity(): IMainActivity = MainActivity()
 
+    @Provides
+    @Singleton
+    fun providePresenter(): IMainPresenter = MainPresenter()
+
+    @Provides
+    @Singleton
+    fun provideRepository(): IMainRepository = MainRepository()
+
+    @Provides
+    @Singleton
+    fun provideIntercator(): IMainInteractor = MainInteractor()
 
     @Provides
     @Singleton

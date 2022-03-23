@@ -17,7 +17,6 @@ class MyApplication: Application() {
     private fun initDagger(app: MyApplication): AppComponent =
         DaggerAppComponent.builder()
             .appModule(AppModule(app))
-            .chartModule(ChartModule())
             .build()
 
 }
