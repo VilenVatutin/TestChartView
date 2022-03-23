@@ -15,16 +15,16 @@ import com.example.testchartview.chart_view.OnPointChosenLitener
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IMainActivity {
     @Inject
-    lateinit var presenter: MainPresenter
+    lateinit var presenter: IMainPresenter
 
     lateinit var chart: ChartView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as MyApplication).appComponent.inject(this)
+        (application as? MyApplication)?.appComponent?.inject(this)
         setContentView(R.layout.activity_main)
         chart = findViewById(R.id.chart)
         val rl = findViewById<RelativeLayout>(R.id.rl)
@@ -34,34 +34,35 @@ class MainActivity : AppCompatActivity() {
         val btn3 = findViewById<TextView>(R.id.btn3)
         val btn4 = findViewById<TextView>(R.id.btn4)
         btn1.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.blue))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-                setData(create1ChartData())
-            }
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.blue))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//                setData(create1ChartData())
+//            }
+            presenter.getData("0-5x-long-ethereum-classic-token")
         }
         btn2.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.purple_200))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-                setData(creat2ChartData())
-            }
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.purple_200))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//                setData(creat2ChartData())
+//            }
 
         }
         btn3.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.teal_200))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-                setData(creat3ChartData())
-            }
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.teal_200))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//                setData(creat3ChartData())
+//            }
 
         }
         btn4.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.gray_900))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-                setData(creat4ChartData())
-            }
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.gray_900))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//                setData(creat4ChartData())
+//            }
 
         }
         chart.setOnPointChosenListener(object : OnPointChosenLitener {
@@ -78,6 +79,8 @@ class MainActivity : AppCompatActivity() {
                 rl.visibility = View.GONE
             }
         })
+
+        presenter.injectView(this)
 
     }
 
@@ -370,5 +373,9 @@ class MainActivity : AppCompatActivity() {
         dataList.add(InputData(1285.5, "05.06.2012"))
         dataList.add(InputData(1315.13, "06.06.201"))
         return dataList
+    }
+
+    override fun showData(prices: List<InputData>) {
+        chart.setData(prices)
     }
 }

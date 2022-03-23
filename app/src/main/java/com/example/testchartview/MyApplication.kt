@@ -3,6 +3,7 @@ package com.example.testchartview
 import android.app.Application
 import com.example.testchartview.app.AppComponent
 import com.example.testchartview.app.AppModule
+import com.example.testchartview.app.DaggerAppComponent
 
 class MyApplication: Application() {
 
@@ -16,6 +17,7 @@ class MyApplication: Application() {
     private fun initDagger(app: MyApplication): AppComponent =
         DaggerAppComponent.builder()
             .appModule(AppModule(app))
+            .chartModule(ChartModule())
             .build()
 
 }

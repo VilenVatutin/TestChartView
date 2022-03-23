@@ -15,6 +15,7 @@ import com.example.chart.chart_view.data.Chart
 import com.example.chart.chart_view.data.DrawData
 import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.R
+import com.example.testchartview.model.PricesDao
 import java.util.ArrayList
 
 class ChartView(
