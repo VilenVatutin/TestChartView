@@ -1,4 +1,4 @@
-package com.example.testchartview
+package com.example.testchartview.main
 
 import android.os.Bundle
 import android.util.TypedValue
@@ -9,14 +9,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginTop
 import com.example.testchartview.chart_view.ChartView
 import com.example.chart.chart_view.data.InputData
+import com.example.testchartview.MyApplication
+import com.example.testchartview.R
 import com.example.testchartview.chart_view.OnPointChosenLitener
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var presenter: MainPresenter
+
     lateinit var chart: ChartView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (application as MyApplication).appComponent.inject(this)
         setContentView(R.layout.activity_main)
         chart = findViewById(R.id.chart)
         val rl = findViewById<RelativeLayout>(R.id.rl)

@@ -22,67 +22,76 @@ object Utils {
         return maxValue
     }
 
-    fun clickOnPoint(x: Float, y: Float, chart: Chart): PointData{
-        for(i: Int in 0..chart.points.lastIndex){
-            if(abs(abs(chart.points[i].x) - abs(x)) <30f && abs(abs(chart.points[i].y) - abs(y)) <=30f){
-                return PointData(chart.points[i].x, chart.points[i].y,chart.points[i].info)
-            }
-        }
-        return PointData(-1f,-1f, "")
-    }
-
-    fun moveOnPoint(x: Float, chart: Chart): PointData{
-        for(i: Int in 0..chart.points.lastIndex){
-            if(abs(abs(chart.points[i].x) - abs(x)) <30f){
+    fun clickOnPoint(x: Float, y: Float, chart: Chart): PointData {
+        for (i: Int in 0..chart.points.lastIndex) {
+            if (abs(abs(chart.points[i].x) - abs(x)) < 30f && abs(abs(chart.points[i].y) - abs(y)) <= 30f) {
                 return PointData(chart.points[i].x, chart.points[i].y, chart.points[i].info)
             }
         }
-        return PointData(-1f,-1f, "")
+        return PointData(-1f, -1f, "")
+    }
+
+    fun moveOnPoint(x: Float, chart: Chart): PointData {
+        for (i: Int in 0..chart.points.lastIndex) {
+            if (abs(abs(chart.points[i].x) - abs(x)) < 30f) {
+                return PointData(chart.points[i].x, chart.points[i].y, chart.points[i].info)
+            }
+        }
+        return PointData(-1f, -1f, "")
     }
 
     fun getCorrectedMaxValue(maxValue: Double): Double {
-        for (value in (maxValue*100).toInt() downTo Chart.CHART_PART_VALUE) {
+        for (value in (maxValue * 100).toInt() downTo Chart.CHART_PART_VALUE) {
             if (value % Chart.CHART_PART_VALUE == 0) {
-                return value.toDouble()/100
+                return value.toDouble() / 100
             }
         }
         return maxValue
     }
 
     fun getCorrectedMinValue(minValue: Double): Double {
-        for (value in (minValue*100).toInt() .. Chart.CHART_PART_VALUE) {
+        for (value in (minValue * 100).toInt()..Chart.CHART_PART_VALUE) {
             if (value % Chart.CHART_PART_VALUE == 0) {
-                return value.toDouble()/100
+                return value.toDouble() / 100
             }
         }
         return minValue
     }
 
-    fun getOffPoint(mOffset: Float, viewWidth: Int ): Int = -1*(mOffset/(viewWidth/Chart.MAX_ITEMS_COUNT)).toInt()
+    fun getOffPoint(mOffset: Float, viewWidth: Int): Int =
+        -1 * (mOffset / (viewWidth / Chart.MAX_ITEMS_COUNT)).toInt()
 
-    fun getDrawData(mOffset: Float,viewWidth: Int, chart: Chart?): List<DrawData> {// возвращает координаты рисования
+    fun getDrawData(
+        mOffset: Float,
+        viewWidth: Int,
+        chart: Chart?
+    ): List<DrawData> {// возвращает координаты рисования
         if (chart == null || chart.inputData.isEmpty()) {
             return ArrayList<DrawData>()
         }
         val offPoint = getOffPoint(mOffset, viewWidth)
-        if(offPoint+chart.offPoint >= 0 &&  Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint <=  chart.inputData.lastIndex){
-            chart.showingData =  (chart.inputData.subList(offPoint+chart.offPoint, Chart.MAX_ITEMS_COUNT+offPoint+chart.offPoint).toList()) as ArrayList<InputData>
+        val to = Chart.MAX_ITEMS_COUNT + offPoint + chart.offPoint
+        val from = chart.offPoint + offPoint
+        if (from < 0) return chart.drawData
+
+        if (to <= chart.inputData.lastIndex ||
+            (to > 0 && offPoint < 0)
+        ) {
+            chart.showingData = (chart.inputData.subList(from, to).toList()) as ArrayList<InputData>
             return createDrawDataList(
                 chart,
                 createValueList(chart.showingData)
             )
         }
-        if(offPoint < 0 &&chart.offPoint+offPoint > 0 && Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint > 0){
-            chart.showingData =  (chart.inputData.subList(chart.offPoint+offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint+offPoint).toList()) as ArrayList<InputData>
-            return createDrawDataList(
-                chart,
-                createValueList(chart.showingData)
-            )
-        }
-        return if(chart.offPoint >= 0  && Chart.MAX_ITEMS_COUNT+chart.offPoint < chart.inputData.lastIndex){
+        return if (chart.offPoint >= 0 && Chart.MAX_ITEMS_COUNT + chart.offPoint < chart.inputData.lastIndex) {
             createDrawDataList(
                 chart,
-                createValueList(chart.inputData.subList( chart.offPoint, Chart.MAX_ITEMS_COUNT+chart.offPoint))
+                createValueList(
+                    chart.inputData.subList(
+                        chart.offPoint,
+                        Chart.MAX_ITEMS_COUNT + chart.offPoint
+                    )
+                )
             )
         } else {
             chart.drawData
@@ -94,7 +103,7 @@ object Utils {
         val minValue = dataList.minByOrNull { it.graphValue }?.graphValue!!
         val topValue = max(dataList) - minValue
         for (data in dataList) {
-            val value = ((data.graphValue- minValue)/ topValue).toFloat()
+            val value = ((data.graphValue - minValue) / topValue).toFloat()
             valueList.add(value)
         }
         return valueList
@@ -111,6 +120,7 @@ object Utils {
         }
         return drawDataList
     }
+
     private fun createDrawData(
         chart: Chart,
         valueList: List<Float>,
@@ -124,7 +134,7 @@ object Utils {
         val startX: Int = getCoordinateX(chart, position)
         val startY: Int = getCoordinateY(chart, value)
         drawData.startX = startX.toFloat()
-        drawData.startY =  startY.toFloat()
+        drawData.startY = startY.toFloat()
         val nextPosition = position + 1
         if (nextPosition < valueList.size) {
             val nextValue = valueList[nextPosition]
@@ -138,9 +148,8 @@ object Utils {
     }
 
 
-
     private fun getCoordinateX(chart: Chart, index: Int): Int {
-        val partWidth = chart.width / (Chart.MAX_ITEMS_COUNT-1)
+        val partWidth = chart.width / (Chart.MAX_ITEMS_COUNT - 1)
         var coordinate = partWidth * index
         if (coordinate < 0) {
             coordinate = 0
