@@ -1,5 +1,5 @@
 package com.example.testchartview.model
 
 data class PricesDao(
-    val prices: List<Pair<Double, Double>>
+    val prices: List<List<Double>>
 )

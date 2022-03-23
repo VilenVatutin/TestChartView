@@ -1,6 +1,5 @@
 package com.example.testchartview.app
 
-import android.app.Application
 import android.content.Context
 import com.example.testchartview.CryptoApi
 import com.example.testchartview.MyApplication
@@ -9,9 +8,12 @@ import com.example.testchartview.main.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 @Module
 class AppModule(private val app: MyApplication) {
@@ -25,13 +27,17 @@ class AppModule(private val app: MyApplication) {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(URL.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(okHttpClient)
         .build()
 
     @Provides
     @Singleton
     fun provideHttpLogging(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
             .build()
     }
 
@@ -41,15 +47,14 @@ class AppModule(private val app: MyApplication) {
 
     @Provides
     @Singleton
-    fun providePresenter(): IMainPresenter = MainPresenter()
+    fun providePresenter(interactor: IMainInteractor): IMainPresenter = MainPresenter(interactor)
+    @Provides
+    @Singleton
+    fun provideInteractor(repoository: IMainRepository): IMainInteractor = MainInteractor(repoository)
 
     @Provides
     @Singleton
-    fun provideRepository(): IMainRepository = MainRepository()
-
-    @Provides
-    @Singleton
-    fun provideIntercator(): IMainInteractor = MainInteractor()
+    fun provideRepository(api: CryptoApi): IMainRepository = MainRepository(api)
 
     @Provides
     @Singleton

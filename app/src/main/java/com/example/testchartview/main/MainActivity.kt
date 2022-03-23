@@ -34,36 +34,32 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         val btn3 = findViewById<TextView>(R.id.btn3)
         val btn4 = findViewById<TextView>(R.id.btn4)
         btn1.setOnClickListener {
-//            chart.apply {
-//                setLineColor(resources.getColor(R.color.blue))
-//                setLineWidth(resources.getDimension(R.dimen.line_width))
-//                setData(create1ChartData())
-//            }
+            chart.apply {
+                setLineColor(resources.getColor(R.color.blue))
+                setLineWidth(resources.getDimension(R.dimen.line_width))
+            }
             presenter.getData("0-5x-long-ethereum-classic-token")
         }
         btn2.setOnClickListener {
-//            chart.apply {
-//                setLineColor(resources.getColor(R.color.purple_200))
-//                setLineWidth(resources.getDimension(R.dimen.line_width))
-//                setData(creat2ChartData())
-//            }
-
+            chart.apply {
+                setLineColor(resources.getColor(R.color.purple_200))
+                setLineWidth(resources.getDimension(R.dimen.line_width))
+            }
+            presenter.getData("0-5x-long-bitcoin-cash-token")
         }
         btn3.setOnClickListener {
-//            chart.apply {
-//                setLineColor(resources.getColor(R.color.teal_200))
-//                setLineWidth(resources.getDimension(R.dimen.line_width))
-//                setData(creat3ChartData())
-//            }
-
+            chart.apply {
+                setLineColor(resources.getColor(R.color.teal_200))
+                setLineWidth(resources.getDimension(R.dimen.line_width))
+            }
+            presenter.getData("0-5x-long-dogecoin-token")
         }
         btn4.setOnClickListener {
-//            chart.apply {
-//                setLineColor(resources.getColor(R.color.gray_900))
-//                setLineWidth(resources.getDimension(R.dimen.line_width))
-//                setData(creat4ChartData())
-//            }
-
+            chart.apply {
+                setLineColor(resources.getColor(R.color.gray_900))
+                setLineWidth(resources.getDimension(R.dimen.line_width))
+            }
+            presenter.getData("0-5x-long-altcoin-index-token")
         }
         chart.setOnPointChosenListener(object : OnPointChosenLitener {
             override fun onPointChosen(paddingLeft: Int, paddinTop: Int, sInfo: String) {

@@ -3,6 +3,7 @@ package com.example.chart.chart_view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Path
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.chart.chart_view.data.Chart
 import com.example.chart.chart_view.data.DrawData
@@ -14,15 +15,17 @@ class DrawController(
     val context: Context,
     val chart: Chart
 ) {
-
+    lateinit var path: Path
     private var frameTextPaint: Paint
 
     fun draw(canvas: Canvas) {
+        path = Path()
         for (i in 0 until Chart.MAX_ITEMS_COUNT) {
             drawChart(canvas, i)
         }
         if (chart.isFrameNeeded) drawFrame(canvas)
     }
+
 
     private fun drawFrame(canvas: Canvas) {
         drawChartVertical(canvas)
@@ -71,6 +74,7 @@ class DrawController(
         if (position > dataList.lastIndex) {
             return
         }
+
         val drawData = dataList[position]
         val startX: Float = drawData.startX
         val startY: Float = drawData.startY
@@ -96,6 +100,7 @@ class DrawController(
     ) {
         val radius: Int = chart.radius
         val inerRadius: Int = chart.innerRadius
+        path.moveTo(startX, startY)
         canvas.drawLine(
             startX, startY, stopX, stopY,
             chart.linePaint
