@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as? MyApplication)?.appComponent?.inject(this)
         setContentView(R.layout.activity_main)
+        (application as? MyApplication)?.appComponent?.inject(this)
         chart = findViewById(R.id.chart)
         val rl = findViewById<RelativeLayout>(R.id.rl)
         val info = findViewById<TextView>(R.id.info)

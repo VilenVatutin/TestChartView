@@ -3,6 +3,7 @@ package com.example.testchartview.app
 import android.app.Application
 import android.content.Context
 import com.example.testchartview.CryptoApi
+import com.example.testchartview.MyApplication
 import com.example.testchartview.URL
 import com.example.testchartview.main.*
 import dagger.Module
@@ -13,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val app: Application) {
+class AppModule(private val app: MyApplication) {
 
     @Provides
     @Singleton
@@ -21,7 +22,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideRetorofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(URL.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)

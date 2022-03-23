@@ -7,6 +7,7 @@ class MainPresenter: IMainPresenter {
 
     @Inject
     lateinit var interactor: IMainInteractor
+
     lateinit var view: IMainActivity
 
 
