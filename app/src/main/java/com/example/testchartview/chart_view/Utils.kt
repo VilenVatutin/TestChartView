@@ -149,7 +149,7 @@ object Utils {
 
 
     private fun getCoordinateX(chart: Chart, index: Int): Int {
-        val partWidth = chart.width / (Chart.MAX_ITEMS_COUNT - 1)
+        val partWidth = chart.width / (Chart.MAX_ITEMS_COUNT-2)
         var coordinate = partWidth * index
         if (coordinate < 0) {
             coordinate = 0

@@ -3,29 +3,31 @@ package com.example.chart.chart_view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Path
-import androidx.appcompat.content.res.AppCompatResources
 import com.example.chart.chart_view.data.Chart
 import com.example.chart.chart_view.data.DrawData
 import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.R
+import com.example.testchartview.chart_view.Bezie
 import com.example.testchartview.chart_view.data.PointData
 
 class DrawController(
     val context: Context,
     val chart: Chart
 ) {
-    lateinit var path: Path
     private var frameTextPaint: Paint
 
     fun draw(canvas: Canvas) {
-        path = Path()
-        for (i in 0 until Chart.MAX_ITEMS_COUNT) {
-            drawChart(canvas, i)
-        }
+        drawPath(canvas)
         if (chart.isFrameNeeded) drawFrame(canvas)
     }
 
+    private fun drawPath(canvas: Canvas) {
+        for (i in 0 until Chart.MAX_ITEMS_COUNT) {
+            drawPoints(canvas, i)
+        }
+        val path = Bezie().getBeziePath(chart.drawData)
+        canvas.drawPath(path, chart.linePaint)
+    }
 
     private fun drawFrame(canvas: Canvas) {
         drawChartVertical(canvas)
@@ -51,7 +53,7 @@ class DrawController(
         var currHeight = height
         var currTitle = minValue
         for (i in 0..Chart.CHART_PARTS) {
-            var titleY = currHeight
+            var titleY = currHeight - Chart.TEXT_OFFSET
             if (i <= 0) {
                 titleY = height
             } else if (textSize + chart.heightOffset > currHeight) {
@@ -59,7 +61,7 @@ class DrawController(
             }
             chart.frameLinePaint.color
             canvas.drawLine(
-                0f, currHeight, width, currHeight,
+                padding.toFloat(), currHeight, width, currHeight,
                 chart.frameLinePaint
             )
             val title = "\$" + String.format("%.2f", currTitle)
@@ -69,27 +71,36 @@ class DrawController(
         }
     }
 
-    private fun drawChart(canvas: Canvas, position: Int) {
+    private fun drawPoints(canvas: Canvas,position: Int) {
         val dataList: List<DrawData> = chart.drawData
         if (position > dataList.lastIndex) {
             return
         }
-
         val drawData = dataList[position]
-        val startX: Float = drawData.startX
-        val startY: Float = drawData.startY
-        val stopX: Float = drawData.stopX
-        val stopY: Float = drawData.stopY
-        val alpha = 255
+        val startX = drawData.startX
+        val startY = drawData.startY
         chart.points[position] = PointData(
-            startX,
-            startY,
+            drawData.startX,
+            drawData.startY,
             "\$${chart.showingData[position].graphValue} \n" + chart.showingData[position].date
         )
-        drawChart(canvas, startX, startY, stopX, stopY, alpha, position)
+        if (position > 0) {
+            chart.pointDrawable?.let {
+                it.setBounds(
+                    startX.toInt() - it.intrinsicWidth / 2,
+                    startY.toInt() - it.intrinsicHeight / 2,
+                    startX.toInt() + it.intrinsicWidth / 2,
+                    startY.toInt() + it.intrinsicHeight / 2
+                )
+                it.draw(canvas)
+            }
+//            chart.linePaint.alpha = alpha
+//            canvas.drawCircle(startX, startY, radius.toFloat(), chart.linePaint)
+//            canvas.drawCircle(startX, startY, inerRadius.toFloat(), chart.linePaint)
+        }
     }
 
-    private fun drawChart(
+    private fun setPoints(
         canvas: Canvas,
         startX: Float,
         startY: Float,
@@ -100,7 +111,6 @@ class DrawController(
     ) {
         val radius: Int = chart.radius
         val inerRadius: Int = chart.innerRadius
-        path.moveTo(startX, startY)
         canvas.drawLine(
             startX, startY, stopX, stopY,
             chart.linePaint

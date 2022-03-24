@@ -43,10 +43,6 @@ class AppModule(private val app: MyApplication) {
 
     @Provides
     @Singleton
-    fun provideMainActivity(): IMainActivity = MainActivity()
-
-    @Provides
-    @Singleton
     fun providePresenter(interactor: IMainInteractor): IMainPresenter = MainPresenter(interactor)
     @Provides
     @Singleton

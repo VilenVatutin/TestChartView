@@ -22,6 +22,7 @@ class Chart {
         }
 
     var linePaint: Paint = Paint().apply {
+        style = Paint.Style.STROKE
         isAntiAlias = true
         color = lineColor
         strokeWidth = lineWidth
@@ -59,7 +60,8 @@ class Chart {
     companion object {
 
         const val CHART_PARTS = 5
-        const val MAX_ITEMS_COUNT = 22
+        const val MAX_ITEMS_COUNT = 30
         const val CHART_PART_VALUE = 100
+        const val TEXT_OFFSET = 20
     }
 }

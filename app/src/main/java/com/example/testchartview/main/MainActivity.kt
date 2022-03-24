@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineColor(resources.getColor(R.color.blue))
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
+//            chart.setData(creat2ChartData())
             presenter.getData("0-5x-long-ethereum-classic-token")
         }
         btn2.setOnClickListener {
