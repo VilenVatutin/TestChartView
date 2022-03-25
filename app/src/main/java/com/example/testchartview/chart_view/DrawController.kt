@@ -84,20 +84,20 @@ class DrawController(
             drawData.startY,
             "\$${chart.showingData[position].graphValue} \n" + chart.showingData[position].date
         )
-        if (position > 0) {
-            chart.pointDrawable?.let {
-                it.setBounds(
-                    startX.toInt() - it.intrinsicWidth / 2,
-                    startY.toInt() - it.intrinsicHeight / 2,
-                    startX.toInt() + it.intrinsicWidth / 2,
-                    startY.toInt() + it.intrinsicHeight / 2
-                )
-                it.draw(canvas)
-            }
+//        if (position > 0) {
+//            chart.pointDrawable?.let {
+//                it.setBounds(
+//                    startX.toInt() - it.intrinsicWidth / 2,
+//                    startY.toInt() - it.intrinsicHeight / 2,
+//                    startX.toInt() + it.intrinsicWidth / 2,
+//                    startY.toInt() + it.intrinsicHeight / 2
+//                )
+//                it.draw(canvas)
+//            }
 //            chart.linePaint.alpha = alpha
 //            canvas.drawCircle(startX, startY, radius.toFloat(), chart.linePaint)
 //            canvas.drawCircle(startX, startY, inerRadius.toFloat(), chart.linePaint)
-        }
+//        }
     }
 
     private fun setPoints(

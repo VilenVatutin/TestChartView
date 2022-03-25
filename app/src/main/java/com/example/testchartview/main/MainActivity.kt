@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.marginTop
 import com.example.testchartview.chart_view.ChartView
 import com.example.chart.chart_view.data.InputData
@@ -20,6 +21,10 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     lateinit var presenter: IMainPresenter
 
     lateinit var chart: ChartView
+    lateinit var btn1: TextView
+    lateinit var btn2: TextView
+    lateinit var btn3: TextView
+    lateinit var btn4: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,17 +34,17 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         chart = findViewById(R.id.chart)
         val rl = findViewById<RelativeLayout>(R.id.rl)
         val info = findViewById<TextView>(R.id.info)
-        val btn1 = findViewById<TextView>(R.id.btn1)
-        val btn2 = findViewById<TextView>(R.id.btn2)
-        val btn3 = findViewById<TextView>(R.id.btn3)
-        val btn4 = findViewById<TextView>(R.id.btn4)
+        btn1 = findViewById(R.id.btn1)
+        btn2 = findViewById(R.id.btn2)
+        btn3 = findViewById(R.id.btn3)
+        btn4 = findViewById(R.id.btn4)
         btn1.setOnClickListener {
             chart.apply {
                 setLineColor(resources.getColor(R.color.blue))
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
-//            chart.setData(creat2ChartData())
             presenter.getData("0-5x-long-ethereum-classic-token")
+            onPointCLick(btn1)
         }
         btn2.setOnClickListener {
             chart.apply {
@@ -47,6 +52,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-bitcoin-cash-token")
+            onPointCLick(btn2)
         }
         btn3.setOnClickListener {
             chart.apply {
@@ -54,6 +60,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-dogecoin-token")
+            onPointCLick(btn3)
         }
         btn4.setOnClickListener {
             chart.apply {
@@ -61,6 +68,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-altcoin-index-token")
+            onPointCLick(btn4)
         }
         chart.setOnPointChosenListener(object : OnPointChosenLitener {
             override fun onPointChosen(paddingLeft: Int, paddinTop: Int, sInfo: String) {
@@ -79,6 +87,36 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
         presenter.injectView(this)
 
+    }
+
+    private fun onPointCLick(button: View){
+        when(button){
+            btn1 ->{
+                btn1.background = AppCompatResources.getDrawable(this, R.drawable.button)
+                btn2.setBackgroundColor(resources.getColor(R.color.white))
+                btn3.setBackgroundColor(resources.getColor(R.color.white))
+                btn4.setBackgroundColor(resources.getColor(R.color.white))
+
+            }
+            btn2 ->{
+                btn1.setBackgroundColor(resources.getColor(R.color.white))
+                btn2.background = AppCompatResources.getDrawable(this, R.drawable.button)
+                btn3.setBackgroundColor(resources.getColor(R.color.white))
+                btn4.setBackgroundColor(resources.getColor(R.color.white))
+            }
+            btn3 ->{
+                btn1.setBackgroundColor(resources.getColor(R.color.white))
+                btn2.setBackgroundColor(resources.getColor(R.color.white))
+                btn3.background = AppCompatResources.getDrawable(this, R.drawable.button)
+                btn4.setBackgroundColor(resources.getColor(R.color.white))
+            }
+            btn4 ->{
+                btn1.setBackgroundColor(resources.getColor(R.color.white))
+                btn2.setBackgroundColor(resources.getColor(R.color.white))
+                btn3.setBackgroundColor(resources.getColor(R.color.white))
+                btn4.background = AppCompatResources.getDrawable(this, R.drawable.button)
+            }
+        }
     }
 
     override fun onDestroy() {
