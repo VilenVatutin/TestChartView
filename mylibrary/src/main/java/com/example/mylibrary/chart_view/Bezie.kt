@@ -1,12 +1,10 @@
-package com.example.testchartview.chart_view
+package com.example.mylibrary.chart_view
 
-import android.graphics.Canvas
 import android.graphics.Path
 import android.graphics.PointF
-import com.example.chart.chart_view.data.DrawData
-import com.example.chart.chart_view.data.InputData
+import com.example.mylibrary.chart_view.data.DrawData
 
-class Bezie {
+object Bezie {
 
     var conPoint1 = mutableListOf<PointF>()
     var conPoint2 = mutableListOf<PointF>()

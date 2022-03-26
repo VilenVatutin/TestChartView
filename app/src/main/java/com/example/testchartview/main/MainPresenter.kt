@@ -1,8 +1,7 @@
 package com.example.testchartview.main
 
 import android.annotation.SuppressLint
-import com.example.chart.chart_view.data.InputData
-import io.reactivex.Scheduler
+import com.example.mylibrary.chart_view.data.InputData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

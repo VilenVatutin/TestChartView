@@ -1,8 +1,9 @@
-package com.example.chart.chart_view
+package com.example.mylibrary.chart_view
 
 import android.content.Context
 import android.graphics.Canvas
-import com.example.chart.chart_view.data.Chart
+import com.example.mylibrary.chart_view.DrawController
+import com.example.mylibrary.chart_view.data.Chart
 
 class DrawManager(context: Context) {
     val chart = Chart()

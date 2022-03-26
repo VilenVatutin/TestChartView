@@ -1,10 +1,9 @@
-package com.example.chart.chart_view
+package com.example.mylibrary.chart_view
 
-import com.example.chart.chart_view.data.Chart
-import com.example.chart.chart_view.data.DrawData
-import com.example.chart.chart_view.data.InputData
-import com.example.testchartview.chart_view.data.PointData
-import com.example.testchartview.chart_view.data.PointDrawData
+import com.example.mylibrary.chart_view.data.Chart
+import com.example.mylibrary.chart_view.data.DrawData
+import com.example.mylibrary.chart_view.data.InputData
+import com.example.mylibrary.chart_view.data.PointDrawData
 import java.util.*
 import kotlin.math.abs
 

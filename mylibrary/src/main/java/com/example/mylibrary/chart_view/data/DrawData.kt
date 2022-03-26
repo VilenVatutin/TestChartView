@@ -1,4 +1,4 @@
-package com.example.chart.chart_view.data
+package com.example.mylibrary.chart_view.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,4 +1,4 @@
-package com.example.testchartview.chart_view
+package com.example.mylibrary.chart_view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -9,13 +9,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.View
-import com.example.chart.chart_view.ChartManager
-import com.example.chart.chart_view.Utils
-import com.example.chart.chart_view.data.Chart
-import com.example.chart.chart_view.data.DrawData
-import com.example.chart.chart_view.data.InputData
-import com.example.testchartview.R
-import com.example.testchartview.model.PricesDao
+import com.example.mylibrary.chart_view.data.Chart
+import com.example.mylibrary.chart_view.data.DrawData
+import com.example.mylibrary.chart_view.data.InputData
+import com.example.mylibrary.R
 import java.util.ArrayList
 
 class ChartView(

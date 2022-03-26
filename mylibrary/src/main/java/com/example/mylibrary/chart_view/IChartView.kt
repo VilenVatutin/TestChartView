@@ -1,4 +1,4 @@
-package com.example.testchartview.chart_view
+package com.example.mylibrary.chart_view
 
 interface IChartView {
     fun setOnPointChosenListener(listener: OnPointChosenLitener)

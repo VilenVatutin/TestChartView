@@ -1,4 +1,4 @@
-package com.example.testchartview.chart_view.data
+package com.example.mylibrary.chart_view.data
 
 data class PointData(
     val x: Float = 0f,

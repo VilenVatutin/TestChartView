@@ -1,8 +1,6 @@
 package com.example.testchartview.main
 
-import com.example.chart.chart_view.data.InputData
-import com.example.testchartview.model.Prices
-import com.example.testchartview.model.PricesDao
+import com.example.mylibrary.chart_view.data.InputData
 
 interface IMainActivity {
 

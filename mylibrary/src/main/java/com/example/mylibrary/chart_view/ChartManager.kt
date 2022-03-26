@@ -1,4 +1,4 @@
-package com.example.chart.chart_view
+package com.example.mylibrary.chart_view
 
 import android.content.Context
 

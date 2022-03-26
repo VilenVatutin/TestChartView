@@ -1,14 +1,13 @@
-package com.example.chart.chart_view
+package com.example.mylibrary.chart_view
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.chart.chart_view.data.Chart
-import com.example.chart.chart_view.data.DrawData
-import com.example.chart.chart_view.data.InputData
-import com.example.testchartview.R
-import com.example.testchartview.chart_view.Bezie
-import com.example.testchartview.chart_view.data.PointData
+import com.example.mylibrary.chart_view.data.Chart
+import com.example.mylibrary.chart_view.data.DrawData
+import com.example.mylibrary.chart_view.data.InputData
+import com.example.mylibrary.R
+import com.example.mylibrary.chart_view.data.PointData
 import java.lang.Math.abs
 
 class DrawController(
@@ -23,7 +22,7 @@ class DrawController(
     }
 
     private fun drawPath(canvas: Canvas) {
-        val path = Bezie().getBeziePath(chart.drawData)
+        val path = Bezie.getBeziePath(chart.drawData)
         canvas.drawPath(path, chart.linePaint)
         for (i in 0 until Chart.MAX_ITEMS_COUNT) {
             setPoints(canvas, i)
