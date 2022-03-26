@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineColor(resources.getColor(R.color.blue))
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
-            presenter.getData("0-5x-long-ethereum-classic-token")
+            presenter.getData("ethereum")
             currentButton = 1
             onPointCLick()
         }
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineColor(resources.getColor(R.color.purple_200))
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
-            presenter.getData("0-5x-long-bitcoin-cash-token")
+            presenter.getData("bitcoin")
             currentButton = 2
             onPointCLick()
         }
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineColor(resources.getColor(R.color.teal_200))
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
-            presenter.getData("0-5x-long-dogecoin-token")
+            presenter.getData("litecoin")
             currentButton = 3
             onPointCLick()
         }
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineColor(resources.getColor(R.color.gray_900))
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
-            presenter.getData("0-5x-long-altcoin-index-token")
+            presenter.getData("cardano")
             currentButton = 4
             onPointCLick()
         }

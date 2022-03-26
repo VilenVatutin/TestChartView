@@ -46,44 +46,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chart"
+            android:gravity="center"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="14dp">
 
             <TextView
                 android:id="@+id/btn1"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
                 android:gravity="center"
                 android:text="ETH"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/btn2"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
                 android:gravity="center"
                 android:text="BTC"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/btn3"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
                 android:gravity="center"
-                android:text="DOG"
-                android:textSize="20sp" />
+                android:text="LTE"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/btn4"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="15dp"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
                 android:gravity="center"
-                android:text="ALT"
-                android:textSize="20sp" />
+                android:text="CRDN"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

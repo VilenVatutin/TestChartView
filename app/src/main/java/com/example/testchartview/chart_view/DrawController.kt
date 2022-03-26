@@ -9,6 +9,7 @@ import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.R
 import com.example.testchartview.chart_view.Bezie
 import com.example.testchartview.chart_view.data.PointData
+import java.lang.Math.abs
 
 class DrawController(
     val context: Context,
@@ -46,14 +47,14 @@ class DrawController(
         val minValue = inputDataList.minByOrNull { it.graphValue }?.graphValue!!
         val correctedMaxValue: Double = Utils.getCorrectedMaxValue(maxValue)
         val correctedMinValue = Utils.getCorrectedMinValue(minValue)
-        val value = (correctedMaxValue - correctedMinValue) / (maxValue - minValue)
+        val value = abs((correctedMaxValue - correctedMinValue) / (maxValue - minValue))
         val heightOffset: Int = chart.heightOffset
         val padding: Int = chart.padding
         val textSize: Int = chart.textSize
         val width: Float = chart.width.toFloat()
         val height: Float = (chart.height - textSize - padding).toFloat()
         val chartPartHeight: Float =
-            ((height - heightOffset) * value / Chart.CHART_PARTS).toFloat()//
+           abs(((height - heightOffset) * value / Chart.CHART_PARTS).toFloat())//
         var currHeight = height
         var currTitle = minValue
         for (i in 0..Chart.CHART_PARTS) {

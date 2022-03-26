@@ -42,18 +42,18 @@ object Utils {
     }
 
     fun getCorrectedMaxValue(maxValue: Double): Double {
-        for (value in (maxValue * 100).toInt() downTo Chart.CHART_PART_VALUE) {
+        for (value in (maxValue * 1000).toInt() downTo Chart.CHART_PART_VALUE) {
             if (value % Chart.CHART_PART_VALUE == 0) {
-                return value.toDouble() / 100
+                return value.toDouble() / 1000
             }
         }
         return maxValue
     }
 
     fun getCorrectedMinValue(minValue: Double): Double {
-        for (value in (minValue * 100).toInt()..Chart.CHART_PART_VALUE) {
+        for (value in (minValue * 1000).toInt()..Chart.CHART_PART_VALUE) {
             if (value % Chart.CHART_PART_VALUE == 0) {
-                return value.toDouble() / 100
+                return value.toDouble() / 1000
             }
         }
         return minValue
