@@ -103,24 +103,32 @@ class ChartView(
                     ACTION_DOWN -> {
                         firstPosition = event.x
                         val point = Utils.clickOnPoint(event.x, event.y, chart)
+                        chart.drawData =
+                            (Utils.getDrawData(offset, this.width, chart)) as ArrayList<DrawData>
                         if (point.x > 0 && point.y > 0) {
+                            chart.pointPosition = point.position
                             pointListener?.onPointChosen(
                                 point.x.toInt(),
                                 point.y.toInt(),
                                 point.info
                             )
                         }
+                        invalidate()
                     }
                     ACTION_MOVE -> {
                         val point = Utils.moveOnPoint(event.x, chart)
+                        chart.pointPosition = point.position
                         pointListener?.onPointChosen(
                             point.x.toInt(),
                             point.y.toInt(),
                             point.info
                         )
+                        invalidate()
                     }
                     ACTION_UP -> {
                         pointListener?.hideDialog()
+                        chart.pointPosition = 0
+                        invalidate()
                     }
                     else -> {
                     }
@@ -134,7 +142,6 @@ class ChartView(
                         firstPosition = it.getX(it.getPointerId(index))
                     }
                     ACTION_MOVE -> {
-
                         offset = event.getX(it.getPointerId(index)) - firstPosition
                         chart.drawData =
                             (Utils.getDrawData(offset, this.width, chart)) as ArrayList<DrawData>

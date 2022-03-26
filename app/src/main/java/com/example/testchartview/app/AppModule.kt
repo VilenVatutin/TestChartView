@@ -43,16 +43,5 @@ class AppModule(private val app: MyApplication) {
 
     @Provides
     @Singleton
-    fun providePresenter(interactor: IMainInteractor): IMainPresenter = MainPresenter(interactor)
-    @Provides
-    @Singleton
-    fun provideInteractor(repoository: IMainRepository): IMainInteractor = MainInteractor(repoository)
-
-    @Provides
-    @Singleton
-    fun provideRepository(api: CryptoApi): IMainRepository = MainRepository(api)
-
-    @Provides
-    @Singleton
     fun provideApi(retrofit: Retrofit): CryptoApi = retrofit.create(CryptoApi::class.java)
 }

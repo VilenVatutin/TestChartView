@@ -4,6 +4,7 @@ import com.example.chart.chart_view.data.Chart
 import com.example.chart.chart_view.data.DrawData
 import com.example.chart.chart_view.data.InputData
 import com.example.testchartview.chart_view.data.PointData
+import com.example.testchartview.chart_view.data.PointDrawData
 import java.util.*
 import kotlin.math.abs
 
@@ -22,22 +23,22 @@ object Utils {
         return maxValue
     }
 
-    fun clickOnPoint(x: Float, y: Float, chart: Chart): PointData {
+    fun clickOnPoint(x: Float, y: Float, chart: Chart): PointDrawData {
         for (i: Int in 0..chart.points.lastIndex) {
             if (abs(abs(chart.points[i].x) - abs(x)) < 30f && abs(abs(chart.points[i].y) - abs(y)) <= 30f) {
-                return PointData(chart.points[i].x, chart.points[i].y, chart.points[i].info)
+                return PointDrawData(chart.points[i].x, chart.points[i].y, chart.points[i].info, i)
             }
         }
-        return PointData(-1f, -1f, "")
+        return PointDrawData(-1f, -1f, "", -1)
     }
 
-    fun moveOnPoint(x: Float, chart: Chart): PointData {
+    fun moveOnPoint(x: Float, chart: Chart): PointDrawData {
         for (i: Int in 0..chart.points.lastIndex) {
             if (abs(abs(chart.points[i].x) - abs(x)) < 30f) {
-                return PointData(chart.points[i].x, chart.points[i].y, chart.points[i].info)
+                return PointDrawData(chart.points[i].x, chart.points[i].y, chart.points[i].info, i)
             }
         }
-        return PointData(-1f, -1f, "")
+        return PointDrawData(-1f, -1f, "", -1)
     }
 
     fun getCorrectedMaxValue(maxValue: Double): Double {
@@ -64,7 +65,8 @@ object Utils {
     fun getDrawData(
         mOffset: Float,
         viewWidth: Int,
-        chart: Chart?
+        chart: Chart?,
+        position: Int? = null,
     ): List<DrawData> {// возвращает координаты рисования
         if (chart == null || chart.inputData.isEmpty()) {
             return ArrayList<DrawData>()

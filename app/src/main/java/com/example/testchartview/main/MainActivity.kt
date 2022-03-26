@@ -25,12 +25,13 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     lateinit var btn2: TextView
     lateinit var btn3: TextView
     lateinit var btn4: TextView
+    var currentButton = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        (application as? MyApplication)?.appComponent?.inject(this)
+        MyApplication.appComponent.inject(this)
         chart = findViewById(R.id.chart)
         val rl = findViewById<RelativeLayout>(R.id.rl)
         val info = findViewById<TextView>(R.id.info)
@@ -44,7 +45,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-ethereum-classic-token")
-            onPointCLick(btn1)
+            currentButton = 1
+            onPointCLick()
         }
         btn2.setOnClickListener {
             chart.apply {
@@ -52,7 +54,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-bitcoin-cash-token")
-            onPointCLick(btn2)
+            currentButton = 2
+            onPointCLick()
         }
         btn3.setOnClickListener {
             chart.apply {
@@ -60,7 +63,8 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-dogecoin-token")
-            onPointCLick(btn3)
+            currentButton = 3
+            onPointCLick()
         }
         btn4.setOnClickListener {
             chart.apply {
@@ -68,12 +72,13 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 setLineWidth(resources.getDimension(R.dimen.line_width))
             }
             presenter.getData("0-5x-long-altcoin-index-token")
-            onPointCLick(btn4)
+            currentButton = 4
+            onPointCLick()
         }
         chart.setOnPointChosenListener(object : OnPointChosenLitener {
             override fun onPointChosen(paddingLeft: Int, paddinTop: Int, sInfo: String) {
                 val params = RelativeLayout.LayoutParams(rl.layoutParams)
-                params.leftMargin = paddingLeft - info.width / 2 + getPx(8)
+                params.leftMargin = paddingLeft - info.width / 2
                 params.topMargin = paddinTop - info.height - getPx(10) + chart.marginTop
                 rl.layoutParams = params
                 rl.visibility = View.VISIBLE
@@ -89,28 +94,43 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     }
 
-    private fun onPointCLick(button: View){
-        when(button){
-            btn1 ->{
+    override fun onResume() {
+        super.onResume()
+        onPointCLick()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(CURRENT_BUTTON, currentButton)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        currentButton = savedInstanceState.getInt(CURRENT_BUTTON)
+        super.onRestoreInstanceState(savedInstanceState)
+    }
+
+    private fun onPointCLick(){
+        when(currentButton){
+            1 ->{
                 btn1.background = AppCompatResources.getDrawable(this, R.drawable.button)
                 btn2.setBackgroundColor(resources.getColor(R.color.white))
                 btn3.setBackgroundColor(resources.getColor(R.color.white))
                 btn4.setBackgroundColor(resources.getColor(R.color.white))
 
             }
-            btn2 ->{
+            2 ->{
                 btn1.setBackgroundColor(resources.getColor(R.color.white))
                 btn2.background = AppCompatResources.getDrawable(this, R.drawable.button)
                 btn3.setBackgroundColor(resources.getColor(R.color.white))
                 btn4.setBackgroundColor(resources.getColor(R.color.white))
             }
-            btn3 ->{
+            3 ->{
                 btn1.setBackgroundColor(resources.getColor(R.color.white))
                 btn2.setBackgroundColor(resources.getColor(R.color.white))
                 btn3.background = AppCompatResources.getDrawable(this, R.drawable.button)
                 btn4.setBackgroundColor(resources.getColor(R.color.white))
             }
-            btn4 ->{
+            4 ->{
                 btn1.setBackgroundColor(resources.getColor(R.color.white))
                 btn2.setBackgroundColor(resources.getColor(R.color.white))
                 btn3.setBackgroundColor(resources.getColor(R.color.white))
@@ -412,5 +432,9 @@ class MainActivity : AppCompatActivity(), IMainActivity {
 
     override fun showData(prices: List<InputData>) {
         chart.setData(prices)
+    }
+
+    companion object{
+        const val CURRENT_BUTTON = "current button"
     }
 }

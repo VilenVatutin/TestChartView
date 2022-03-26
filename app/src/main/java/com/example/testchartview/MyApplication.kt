@@ -7,7 +7,10 @@ import com.example.testchartview.app.DaggerAppComponent
 
 class MyApplication: Application() {
 
-    lateinit var appComponent: AppComponent
+    companion object{
+        lateinit var appComponent: AppComponent
+    }
+
 
     override fun onCreate() {
         super.onCreate()

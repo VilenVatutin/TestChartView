@@ -38,6 +38,7 @@ class Chart {
     var padding = 0
     var textSize = 0
     var heightOffset = 0
+    var pointPosition = 0
 
     var radius = 0
     var innerRadius = 0

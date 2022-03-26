@@ -1,5 +1,6 @@
 package com.example.testchartview.main
 
+import android.annotation.SuppressLint
 import com.example.chart.chart_view.data.InputData
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -8,9 +9,6 @@ import javax.inject.Inject
 
 
 class MainPresenter @Inject constructor(private var interactor: IMainInteractor): IMainPresenter {
-
-//    @Inject
-//    lateinit var interactor: IMainInteractor
 
     lateinit var view: IMainActivity
 
@@ -21,13 +19,21 @@ class MainPresenter @Inject constructor(private var interactor: IMainInteractor)
 
 
 
+    @SuppressLint("CheckResult")
     override fun getData(ticker: String){
-        interactor.getData(ticker).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            val list = mutableListOf<InputData>()
-            it.prices.forEach { price ->
-                list.add(InputData(price[1]))
+        interactor.getData(ticker)
+            .map {
+                val list = mutableListOf<InputData>()
+                it.prices.forEach { price ->
+                    list.add(InputData(price[1],"07.06.2012"))
+                }
+                return@map list
             }
-            view.showData(list)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+            .subscribe({
+            view.showData(it)
         },{
             print(it)
         })

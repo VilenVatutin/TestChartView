@@ -22,11 +22,15 @@ class DrawController(
     }
 
     private fun drawPath(canvas: Canvas) {
-        for (i in 0 until Chart.MAX_ITEMS_COUNT) {
-            drawPoints(canvas, i)
-        }
         val path = Bezie().getBeziePath(chart.drawData)
         canvas.drawPath(path, chart.linePaint)
+        for (i in 0 until Chart.MAX_ITEMS_COUNT) {
+            setPoints(canvas, i)
+//            drawPoints(canvas, i)
+        }
+        if(chart.pointPosition != 0){
+            drawPoints(canvas, chart.pointPosition)
+        }
     }
 
     private fun drawFrame(canvas: Canvas) {
@@ -71,7 +75,7 @@ class DrawController(
         }
     }
 
-    private fun drawPoints(canvas: Canvas,position: Int) {
+    private fun setPoints(canvas: Canvas, position: Int) {
         val dataList: List<DrawData> = chart.drawData
         if (position > dataList.lastIndex) {
             return
@@ -79,10 +83,11 @@ class DrawController(
         val drawData = dataList[position]
         val startX = drawData.startX
         val startY = drawData.startY
+        val price = "\$" + String.format("%.2f", chart.showingData[position].graphValue)
         chart.points[position] = PointData(
-            drawData.startX,
-            drawData.startY,
-            "\$${chart.showingData[position].graphValue} \n" + chart.showingData[position].date
+            startX,
+            startY,
+            price +"\n"+chart.showingData[position].date
         )
 //        if (position > 0) {
 //            chart.pointDrawable?.let {
@@ -100,34 +105,22 @@ class DrawController(
 //        }
     }
 
-    private fun setPoints(
+    private fun drawPoints(
         canvas: Canvas,
-        startX: Float,
-        startY: Float,
-        stopX: Float,
-        stopY: Float,
-        alpha: Int,
         position: Int
     ) {
-        val radius: Int = chart.radius
-        val inerRadius: Int = chart.innerRadius
-        canvas.drawLine(
-            startX, startY, stopX, stopY,
-            chart.linePaint
-        )
         if (position > 0) {
+            val x  =chart.points[position].x
+            val y = chart.points[position].y
             chart.pointDrawable?.let {
                 it.setBounds(
-                    startX.toInt() - it.intrinsicWidth / 2,
-                    startY.toInt() - it.intrinsicHeight / 2,
-                    startX.toInt() + it.intrinsicWidth / 2,
-                    startY.toInt() + it.intrinsicHeight / 2
+                    x.toInt() - it.intrinsicWidth / 2,
+                    y.toInt() - it.intrinsicHeight / 2,
+                    x.toInt() + it.intrinsicWidth / 2,
+                    y.toInt() + it.intrinsicHeight / 2
                 )
                 it.draw(canvas)
             }
-//            chart.linePaint.alpha = alpha
-//            canvas.drawCircle(startX, startY, radius.toFloat(), chart.linePaint)
-//            canvas.drawCircle(startX, startY, inerRadius.toFloat(), chart.linePaint)
         }
     }
 
