@@ -54,7 +54,6 @@
                 android:id="@+id/btn1"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="25dp"
                 android:gravity="center"
                 android:text="ETH"
                 android:textSize="14sp" />

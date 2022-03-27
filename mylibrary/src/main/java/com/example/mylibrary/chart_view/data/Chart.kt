@@ -50,7 +50,7 @@ class Chart {
     var offPoint: Int = 0
         set(value) {
             field = when {
-                value < 0 -> 0
+                value <= 0 -> 0
                 value > inputData.lastIndex - MAX_ITEMS_COUNT -> inputData.lastIndex - MAX_ITEMS_COUNT
                 else -> value
             }

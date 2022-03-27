@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
     lateinit var btn2: TextView
     lateinit var btn3: TextView
     lateinit var btn4: TextView
-    var currentButton = 0
+    var currentButton = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,29 +39,29 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         btn3 = findViewById(R.id.btn3)
         btn4 = findViewById(R.id.btn4)
         btn1.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.blue))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-            }
-            presenter.getData("ethereum")
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.blue))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//            }
+//            presenter.getData("ethereum")
             currentButton = 1
             onPointCLick()
         }
         btn2.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.purple_200))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-            }
-            presenter.getData("bitcoin")
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.purple_200))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//            }
+//            presenter.getData("bitcoin")
             currentButton = 2
             onPointCLick()
         }
         btn3.setOnClickListener {
-            chart.apply {
-                setLineColor(resources.getColor(R.color.teal_200))
-                setLineWidth(resources.getDimension(R.dimen.line_width))
-            }
-            presenter.getData("litecoin")
+//            chart.apply {
+//                setLineColor(resources.getColor(R.color.teal_200))
+//                setLineWidth(resources.getDimension(R.dimen.line_width))
+//            }
+//            presenter.getData("litecoin")
             currentButton = 3
             onPointCLick()
         }
@@ -107,28 +107,48 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         super.onRestoreInstanceState(savedInstanceState)
     }
 
-    private fun onPointCLick(){
-        when(currentButton){
-            1 ->{
+    private fun onPointCLick() {
+        when (currentButton) {
+            1 -> {
+                chart.apply {
+                    setLineColor(resources.getColor(R.color.blue))
+                    setLineWidth(resources.getDimension(R.dimen.line_width))
+                }
+                presenter.getData("ethereum")
                 btn1.background = AppCompatResources.getDrawable(this, R.drawable.button)
                 btn2.setBackgroundColor(resources.getColor(R.color.white))
                 btn3.setBackgroundColor(resources.getColor(R.color.white))
                 btn4.setBackgroundColor(resources.getColor(R.color.white))
 
             }
-            2 ->{
+            2 -> {
+                chart.apply {
+                    setLineColor(resources.getColor(R.color.purple_200))
+                    setLineWidth(resources.getDimension(R.dimen.line_width))
+                }
+                presenter.getData("bitcoin")
                 btn1.setBackgroundColor(resources.getColor(R.color.white))
                 btn2.background = AppCompatResources.getDrawable(this, R.drawable.button)
                 btn3.setBackgroundColor(resources.getColor(R.color.white))
                 btn4.setBackgroundColor(resources.getColor(R.color.white))
             }
-            3 ->{
+            3 -> {
+                chart.apply {
+                    setLineColor(resources.getColor(R.color.teal_200))
+                    setLineWidth(resources.getDimension(R.dimen.line_width))
+                }
+                presenter.getData("litecoin")
                 btn1.setBackgroundColor(resources.getColor(R.color.white))
                 btn2.setBackgroundColor(resources.getColor(R.color.white))
                 btn3.background = AppCompatResources.getDrawable(this, R.drawable.button)
                 btn4.setBackgroundColor(resources.getColor(R.color.white))
             }
-            4 ->{
+            4 -> {
+                chart.apply {
+                    setLineColor(resources.getColor(R.color.gray_900))
+                    setLineWidth(resources.getDimension(R.dimen.line_width))
+                }
+                presenter.getData("cardano")
                 btn1.setBackgroundColor(resources.getColor(R.color.white))
                 btn2.setBackgroundColor(resources.getColor(R.color.white))
                 btn3.setBackgroundColor(resources.getColor(R.color.white))
@@ -432,7 +452,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         chart.setData(prices)
     }
 
-    companion object{
+    companion object {
         const val CURRENT_BUTTON = "current button"
     }
 }
