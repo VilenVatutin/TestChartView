@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.testchartview.CryptoApi
 import com.example.testchartview.MyApplication
 import com.example.testchartview.URL
-import com.example.testchartview.main.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

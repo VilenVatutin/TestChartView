@@ -1,10 +1,8 @@
 package com.example.testchartview.app
 
-import com.example.testchartview.CryptoApi
 import com.example.testchartview.main.*
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
 @Module

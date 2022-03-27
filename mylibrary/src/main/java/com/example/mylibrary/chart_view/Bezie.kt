@@ -4,7 +4,7 @@ import android.graphics.Path
 import android.graphics.PointF
 import com.example.mylibrary.chart_view.data.DrawData
 
-object Bezie {
+object Bezie {//обьект для получения сглаженного графика
 
     var conPoint1 = mutableListOf<PointF>()
     var conPoint2 = mutableListOf<PointF>()

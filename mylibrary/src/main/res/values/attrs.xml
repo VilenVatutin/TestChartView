@@ -5,6 +5,6 @@
         <attr name="lineWidth" format="dimension" />
         <attr name="frameLineColor" format="color" />
         <attr name="isFrameNeeded" format="boolean" />
-        <attr name="point" format="integer"/>
+        <attr name="point" format="integer"/>// можно установить drawable для отображения точек
     </declare-styleable>
 </resources>
