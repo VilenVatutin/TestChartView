@@ -9,34 +9,36 @@ import java.util.*
 import javax.inject.Inject
 
 
-class MainPresenter @Inject constructor(private var interactor: IMainInteractor): IMainPresenter {
+class MainPresenter @Inject constructor(private var interactor: IMainInteractor) : IMainPresenter {
 
     lateinit var view: IMainActivity
 
 
-    override fun injectView(view: IMainActivity){
+    override fun injectView(view: IMainActivity) {
         this.view = view
     }
 
-
-
     @SuppressLint("CheckResult")
-    override fun getData(ticker: String){
+    override fun getData(ticker: String) {
         interactor.getData(ticker)
             .map {
                 val list = mutableListOf<InputData>()
                 it.prices.forEach { price ->
-                    list.add(InputData(price[1],
-                        SimpleDateFormat("yyyy-MM-dd").format(Date(price[0].toLong()))))
+                    list.add(
+                        InputData(
+                            price[1],
+                            SimpleDateFormat("yyyy-MM-dd").format(Date(price[0].toLong()))
+                        )
+                    )
                 }
                 return@map list
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-            view.showData(it)
-        },{
-            print(it)
-        })
+                view.showData(it)
+            }, {
+                print(it)
+            })
     }
 }

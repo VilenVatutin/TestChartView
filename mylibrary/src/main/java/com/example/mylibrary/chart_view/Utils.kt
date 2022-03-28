@@ -65,7 +65,6 @@ object Utils {
         mOffset: Float,
         viewWidth: Int,
         chart: Chart?,
-        position: Int? = null,
     ): List<DrawData> {// возвращает координаты рисования
         if (chart == null || chart.inputData.isEmpty()) {
             return ArrayList<DrawData>()
